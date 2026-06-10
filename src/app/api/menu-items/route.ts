@@ -18,7 +18,7 @@ export async function GET() {
         mi.created_at
       FROM menu_items mi
       LEFT JOIN categories c ON mi.category_id = c.id
-      ORDER BY mi.created_at ASC
+      ORDER BY mi.sort_order ASC, mi.created_at DESC
     `;
     return NextResponse.json(rows);
   } catch (error) {

@@ -9,6 +9,7 @@ export interface MenuItem {
   category_id: number | null;
   image: string; // image_base64 or URL
   available: boolean;
+  sort_order?: number;
 }
 
 export interface CartItem {

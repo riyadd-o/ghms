@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import { MenuItem, Category, Order } from "@/types";
-import { Plus, Edit, Trash2, Shield, ShoppingBag, History, ToggleLeft, ToggleRight, X, Filter, Calendar, QrCode as QrIcon, Download, Printer, DollarSign, TrendingUp, Package, Clock } from "lucide-react";
+import { Plus, Edit, Trash2, Shield, ShoppingBag, History, ToggleLeft, ToggleRight, X, Filter, Calendar, QrCode as QrIcon, Download, Printer, DollarSign, TrendingUp, Package, Clock, GripVertical } from "lucide-react";
 import QRCode from "qrcode";
 
 import StaffLogoutButton from "@/components/StaffLogoutButton";
@@ -56,6 +56,46 @@ export default function AdminPanel() {
   };
   const removeToast = (id: number) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
+  };
+
+  // Drag and Drop State
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+
+  const handleDragStart = (e: React.DragEvent, index: number) => {
+    setDraggedIndex(index);
+    e.dataTransfer.effectAllowed = "move";
+  };
+
+  const handleDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault();
+    if (draggedIndex === null || draggedIndex === index) return;
+    const newMenu = [...menu];
+    const [draggedItem] = newMenu.splice(draggedIndex, 1);
+    newMenu.splice(index, 0, draggedItem);
+    setMenu(newMenu);
+    setDraggedIndex(index);
+  };
+
+  const handleDrop = async (e: React.DragEvent) => {
+    e.preventDefault();
+    if (draggedIndex === null) return;
+    setDraggedIndex(null);
+    try {
+      const ids = menu.map((m) => m.id);
+      const res = await fetch("/api/menu-items/reorder", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids }),
+      });
+      if (res.ok) {
+        addToast({ id: Date.now(), type: "success", message: "Menu order updated" });
+      } else {
+        throw new Error("Failed to save order");
+      }
+    } catch (err) {
+      addToast({ id: Date.now(), type: "error", message: (err as Error).message });
+      await fetchMenu();
+    }
   };
 
   const targetUrl = typeof window !== "undefined" ? `${window.location.origin}/` : `/`;
@@ -536,6 +576,7 @@ export default function AdminPanel() {
                 <table className="w-full border-collapse text-left text-sm text-gray-400">
                   <thead className="border-b border-luxury-gold/15 bg-luxury-black/40 font-serif text-xs font-semibold text-white tracking-widest uppercase">
                     <tr>
+                      <th className="px-6 py-4 w-10"></th>
                       <th className="px-6 py-4">Item</th>
                       <th className="px-6 py-4">Category</th>
                       <th className="px-6 py-4">Price</th>
@@ -544,8 +585,19 @@ export default function AdminPanel() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-luxury-gold/5">
-                    {menu.map((item) => (
-                      <tr key={item.id} className="hover:bg-luxury-charcoal/10 transition-colors">
+                    {menu.map((item, index) => (
+                      <tr 
+                        key={item.id} 
+                        draggable 
+                        onDragStart={(e) => handleDragStart(e, index)}
+                        onDragOver={(e) => handleDragOver(e, index)}
+                        onDrop={handleDrop}
+                        onDragEnd={(e) => handleDrop(e)}
+                        className={`hover:bg-luxury-charcoal/10 transition-colors ${draggedIndex === index ? 'opacity-50 bg-luxury-charcoal/20' : ''}`}
+                      >
+                        <td className="px-4 py-4 cursor-grab active:cursor-grabbing text-gray-500 hover:text-luxury-gold transition-colors">
+                          <GripVertical className="h-4 w-4" />
+                        </td>
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-4">
                             {item.image ? (
