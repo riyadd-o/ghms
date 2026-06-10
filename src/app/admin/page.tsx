@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useCallback, useRef } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { MenuItem, Category, Order } from "@/types";
 import { Plus, Edit, Trash2, Shield, ShoppingBag, History, ToggleLeft, ToggleRight, X, Filter, Calendar, QrCode as QrIcon, Download, Printer, DollarSign, TrendingUp, Package, Clock } from "lucide-react";
 import QRCode from "qrcode";
@@ -13,7 +13,7 @@ export default function AdminPanel() {
   const [menu, setMenu] = useState<MenuItem[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
 
   // ---- UI State ----
   const [mounted, setMounted] = useState(false);

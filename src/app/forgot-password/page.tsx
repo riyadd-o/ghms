@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import Toast, { ToastMessage } from "@/components/Toast";
@@ -36,7 +36,7 @@ function ForgotPasswordContent() {
         const data = await res.json();
         addToast({ id: Date.now(), type: "error", message: data.error || "No account found with this email. Please try again." });
       }
-    } catch (err) {
+    } catch {
       addToast({ id: Date.now(), type: "error", message: "Network error. Please try again." });
     } finally {
       setLoading(false);

@@ -58,7 +58,7 @@ function ResetPasswordContent() {
       } else {
         addToast({ id: Date.now(), type: "error", message: "This reset link is invalid or has expired." });
       }
-    } catch (err) {
+    } catch {
       addToast({ id: Date.now(), type: "error", message: "Network error. Please try again." });
     } finally {
       setLoading(false);

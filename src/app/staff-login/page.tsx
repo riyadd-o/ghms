@@ -7,7 +7,7 @@ import { Eye, EyeOff } from "lucide-react";
 import Toast, { ToastMessage } from "@/components/Toast";
 
 function StaffLoginContent() {
-  const router = useRouter();
+
   const searchParams = useSearchParams();
   const redirectPath = searchParams.get("redirect");
 
@@ -43,7 +43,7 @@ function StaffLoginContent() {
       } else {
         addToast({ id: Date.now(), type: "error", message: "Invalid password. Please try again." });
       }
-    } catch (err) {
+    } catch {
       addToast({ id: Date.now(), type: "error", message: "Network error. Please try again." });
     } finally {
       setLoading(false);
