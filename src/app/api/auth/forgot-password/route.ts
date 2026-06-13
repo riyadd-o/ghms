@@ -41,9 +41,9 @@ export async function POST(req: NextRequest) {
       subject: "Golden Hotel - Password Reset Request",
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; text-align: center;">
-          <h1 style="color: #C9A84C;">Golden Hotel</h1>
+          <h1 style="color: #D4AF37;">Golden Hotel</h1>
           <p>Click the link below to reset your password. This link expires in 1 hour.</p>
-          <a href="${resetUrl}" style="display: inline-block; padding: 12px 24px; background-color: #C9A84C; color: #1A1A1A; text-decoration: none; border-radius: 4px; font-weight: bold; margin-top: 20px;">Reset Password</a>
+          <a href="${resetUrl}" style="display: inline-block; padding: 12px 24px; background-color: #D4AF37; color: #112920; text-decoration: none; border-radius: 4px; font-weight: bold; margin-top: 20px;">Reset Password</a>
         </div>
       `,
     };

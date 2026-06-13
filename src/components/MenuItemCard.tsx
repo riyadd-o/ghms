@@ -30,7 +30,7 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
   };
 
   return (
-    <article className="group relative flex flex-col overflow-hidden rounded-lg border border-luxury-gold/10 bg-luxury-charcoal/40 transition-all duration-500 hover:-translate-y-1 hover:border-luxury-gold/30 hover:shadow-[0_8px_30px_rgb(201,168,76,0.05)]">
+    <article className="group relative flex flex-col overflow-hidden rounded-lg border border-luxury-gold/10 bg-luxury-green-secondary/40 transition-all duration-500 hover:-translate-y-1 hover:border-luxury-gold/30 hover:shadow-[0_8px_30px_rgb(201,168,76,0.05)]">
       {/* Food Image Container */}
       <div className="relative h-36 md:h-56 w-full overflow-hidden">
         {/* Availability overlay */}
@@ -49,13 +49,13 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
             loading="lazy"
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-luxury-black/80 transition-transform duration-700 group-hover:scale-105">
+          <div className="flex h-full w-full items-center justify-center bg-luxury-green/80 transition-transform duration-700 group-hover:scale-105">
             <span className="font-serif text-3xl md:text-5xl text-gray-700 uppercase">
               {item.name.charAt(0)}
             </span>
           </div>
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-luxury-black via-transparent to-transparent opacity-60" />
+        <div className="absolute inset-0 bg-gradient-to-t from-luxury-green via-transparent to-transparent opacity-60" />
       </div>
 
       {/* Details Container */}
@@ -85,7 +85,7 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
             {/* DESKTOP: full quantity selector + add to cart */}
             <div className="hidden md:flex items-center gap-3 mt-auto">
               {/* Quantity Selector */}
-              <div className="flex items-center rounded border border-luxury-gold/20 bg-luxury-black/40">
+              <div className="flex items-center rounded border border-luxury-gold/20 bg-luxury-green/40">
                 <button
                   onClick={decrement}
                   className="flex h-9 w-9 items-center justify-center text-gray-400 hover:text-white transition-colors"
@@ -111,7 +111,7 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
                 className={`flex flex-1 items-center justify-center gap-2 rounded px-4 py-2.5 text-xs font-semibold tracking-widest uppercase transition-all duration-300 ${
                   added
                     ? "bg-emerald-600 text-white"
-                    : "bg-luxury-gold text-luxury-black hover:bg-luxury-gold-hover hover:shadow-[0_0_12px_rgba(201,168,76,0.3)]"
+                    : "bg-luxury-gold text-luxury-green hover:bg-luxury-gold-hover hover:shadow-[0_0_12px_rgba(201,168,76,0.3)]"
                 }`}
               >
                 {added ? (
@@ -135,7 +135,7 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
                 className={`flex w-full items-center justify-center gap-1.5 rounded px-3 py-2 text-[10px] font-semibold tracking-widest uppercase transition-all duration-300 ${
                   added
                     ? "bg-emerald-600 text-white"
-                    : "bg-luxury-gold text-luxury-black hover:bg-luxury-gold-hover"
+                    : "bg-luxury-gold text-luxury-green hover:bg-luxury-gold-hover"
                 }`}
               >
                 {added ? (

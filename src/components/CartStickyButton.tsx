@@ -20,12 +20,12 @@ export default function CartStickyButton() {
 
   return (
     <div className="fixed bottom-6 left-1/2 z-40 w-full max-w-lg -translate-x-1/2 px-4 md:px-0">
-      <div className="flex items-center justify-between gap-4 rounded-full border border-luxury-gold bg-luxury-black/90 p-2 pl-6 shadow-[0_10px_35px_rgba(201,168,76,0.2)] backdrop-blur-md">
+      <div className="flex items-center justify-between gap-4 rounded-full border border-luxury-gold bg-luxury-green/90 p-2 pl-6 shadow-[0_10px_35px_rgba(201,168,76,0.2)] backdrop-blur-md">
         {/* Cart Info */}
         <div className="flex items-center gap-3">
-          <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-luxury-gold text-luxury-black">
+          <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-luxury-gold text-luxury-green">
             <ShoppingBag className="h-5 w-5" />
-            <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-white text-[9px] font-bold text-luxury-black border border-luxury-black">
+            <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-white text-[9px] font-bold text-luxury-green border border-luxury-green">
               {totalItems}
             </span>
           </div>
@@ -43,7 +43,7 @@ export default function CartStickyButton() {
         <Link
           href="/cart"
           prefetch={true}
-          className="flex items-center gap-2 rounded-full bg-luxury-gold px-6 py-3 text-xs font-semibold tracking-widest text-luxury-black uppercase transition-all duration-300 hover:bg-luxury-gold-hover hover:shadow-[0_0_15px_rgba(201,168,76,0.3)]"
+          className="flex items-center gap-2 rounded-full bg-luxury-gold px-6 py-3 text-xs font-semibold tracking-widest text-luxury-green uppercase transition-all duration-300 hover:bg-luxury-gold-hover hover:shadow-[0_0_15px_rgba(201,168,76,0.3)]"
         >
           <span>View Cart</span>
           <ArrowRight className="h-4 w-4" />

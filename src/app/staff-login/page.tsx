@@ -16,6 +16,7 @@ function StaffLoginContent() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   const addToast = (msg: ToastMessage) => setToasts((prev) => [...prev, msg]);
   const removeToast = (id: number) => setToasts((prev) => prev.filter((t) => t.id !== id));
@@ -26,6 +27,7 @@ function StaffLoginContent() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setError(null);
 
     try {
       const res = await fetch("/api/auth/login", {
@@ -41,17 +43,17 @@ function StaffLoginContent() {
           window.location.href = redirectPath || defaultPath;
         }, 1500);
       } else {
-        addToast({ id: Date.now(), type: "error", message: "Invalid password. Please try again." });
+        setError("Invalid password. Please try again.");
       }
     } catch {
-      addToast({ id: Date.now(), type: "error", message: "Network error. Please try again." });
+      setError("Network error. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-luxury-black flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-luxury-green flex flex-col items-center justify-center p-4">
       <div className="fixed top-4 right-4 flex flex-col gap-2 z-50">
         {toasts.map((t) => (
           <Toast key={t.id} message={t.message} type={t.type} onClose={() => removeToast(t.id)} />
@@ -59,10 +61,10 @@ function StaffLoginContent() {
       </div>
 
       <div className="mb-8 text-center flex flex-col items-center">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full border border-[#C9A84C] bg-[#0A0A0A] shadow-[0_0_15px_rgba(201,168,76,0.3)] mb-4">
+        <div className="flex h-16 w-16 items-center justify-center rounded-full border border-[#D4AF37] bg-[#0B1F1A] shadow-[0_0_15px_rgba(201,168,76,0.3)] mb-4">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M16 8.5C15 7 13.5 6 12 6C8.5 6 6 8.5 6 12C6 15.5 8.5 18 12 18C14 18 15.5 16.8 16.2 15H12" stroke="#C9A84C" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
-            <line x1="7" y1="21" x2="17" y2="21" stroke="#C9A84C" strokeWidth="0.5" strokeLinecap="round"/>
+            <path d="M16 8.5C15 7 13.5 6 12 6C8.5 6 6 8.5 6 12C6 15.5 8.5 18 12 18C14 18 15.5 16.8 16.2 15H12" stroke="#D4AF37" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
+            <line x1="7" y1="21" x2="17" y2="21" stroke="#D4AF37" strokeWidth="0.5" strokeLinecap="round"/>
           </svg>
         </div>
         <h1 className="font-serif text-2xl font-bold tracking-widest text-white uppercase">
@@ -73,24 +75,24 @@ function StaffLoginContent() {
         </p>
       </div>
 
-      <div className="w-full max-w-sm rounded-xl border border-luxury-gold/20 bg-luxury-charcoal/40 p-8 shadow-2xl backdrop-blur-sm">
+      <div className="w-full max-w-sm rounded-xl border border-luxury-gold/20 bg-luxury-green-secondary/40 p-8 shadow-2xl backdrop-blur-sm">
         
         {/* Role Toggle */}
-        <div className="flex bg-luxury-black/60 rounded-lg p-1 border border-luxury-gold/10 mb-6">
+        <div className="flex bg-luxury-green/60 rounded-lg p-1 border border-luxury-gold/10 mb-6">
           <button
             type="button"
-            onClick={() => setRole("admin")}
+            onClick={() => { setRole("admin"); setError(null); }}
             className={`flex-1 rounded-md py-2 text-xs font-semibold tracking-widest uppercase transition-all ${
-              role === "admin" ? "bg-luxury-gold text-luxury-black shadow-sm" : "text-gray-400 hover:text-white"
+              role === "admin" ? "bg-luxury-gold text-luxury-green shadow-sm" : "text-gray-400 hover:text-white"
             }`}
           >
             Admin
           </button>
           <button
             type="button"
-            onClick={() => setRole("chef")}
+            onClick={() => { setRole("chef"); setError(null); }}
             className={`flex-1 rounded-md py-2 text-xs font-semibold tracking-widest uppercase transition-all ${
-              role === "chef" ? "bg-luxury-gold text-luxury-black shadow-sm" : "text-gray-400 hover:text-white"
+              role === "chef" ? "bg-luxury-gold text-luxury-green shadow-sm" : "text-gray-400 hover:text-white"
             }`}
           >
             Kitchen
@@ -108,9 +110,9 @@ function StaffLoginContent() {
                 type={showPassword ? "text" : "password"}
                 required
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => { setPassword(e.target.value); setError(null); }}
                 placeholder="Enter your password"
-                className="w-full rounded border border-luxury-gold/20 bg-luxury-black/50 py-3 pl-4 pr-10 text-sm text-white placeholder-gray-600 focus:border-luxury-gold focus:outline-none transition-all"
+                className="w-full rounded border border-luxury-gold/20 bg-luxury-green/50 py-3 pl-4 pr-10 text-sm text-white placeholder-gray-600 focus:border-luxury-gold focus:outline-none transition-all"
               />
               <button
                 type="button"
@@ -120,14 +122,15 @@ function StaffLoginContent() {
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
             </div>
+            {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="flex w-full items-center justify-center rounded bg-luxury-gold py-3 text-xs font-semibold tracking-widest text-luxury-black uppercase hover:bg-luxury-gold-hover transition-all hover:shadow-[0_0_15px_rgba(201,168,76,0.25)] disabled:opacity-50"
+            className="flex w-full items-center justify-center rounded bg-luxury-gold py-3 text-xs font-semibold tracking-widest text-luxury-green uppercase hover:bg-luxury-gold-hover transition-all hover:shadow-[0_0_15px_rgba(201,168,76,0.25)] disabled:opacity-50"
           >
-            {loading ? <div className="h-4 w-4 animate-spin rounded-full border-t-2 border-luxury-black" /> : "Login"}
+            {loading ? <div className="h-4 w-4 animate-spin rounded-full border-t-2 border-luxury-green" /> : "Login"}
           </button>
           
           <div className="text-center mt-4">
@@ -143,7 +146,7 @@ function StaffLoginContent() {
 
 export default function StaffLogin() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-luxury-black" />}>
+    <Suspense fallback={<div className="min-h-screen bg-luxury-green" />}>
       <StaffLoginContent />
     </Suspense>
   );

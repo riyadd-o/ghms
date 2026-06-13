@@ -22,7 +22,6 @@ export default function Home() {
 
   const addToCart = useStore((state) => state.addToCart);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
-  const [isLoaded, setIsLoaded] = useState(false);
 
   const addToast = (msg: ToastMessage) => setToasts((prev) => [...prev, msg]);
   const removeToast = (id: number) => setToasts((prev) => prev.filter((t) => t.id !== id));
@@ -34,7 +33,6 @@ export default function Home() {
 
   useEffect(() => {
     setMounted(true);
-    setTimeout(() => setIsLoaded(true), 100);
 
     const fetchData = async () => {
       try {
@@ -84,7 +82,7 @@ export default function Home() {
 
   if (!mounted || loading) {
     return (
-      <div className="min-h-screen bg-luxury-black flex flex-col items-center justify-center">
+      <div className="min-h-screen bg-luxury-green flex flex-col items-center justify-center">
         <div className="h-10 w-10 animate-spin rounded-full border-t-2 border-luxury-gold" />
         <p className="mt-4 font-serif text-sm text-luxury-gold tracking-widest uppercase">Loading Menu...</p>
       </div>
@@ -103,53 +101,59 @@ export default function Home() {
   const specialItem = menu.find(item => item.available);
 
   return (
-    <div className="min-h-screen bg-luxury-black pb-28">
+    <div className="min-h-screen bg-luxury-green pb-28">
       <div className="fixed top-4 right-4 flex flex-col gap-2 z-50">
         {toasts.map((t) => (
           <Toast key={t.id} message={t.message} type={t.type} onClose={() => removeToast(t.id)} />
         ))}
       </div>
-      <section className="relative flex flex-col items-center justify-center bg-luxury-charcoal/30 py-8 px-6 text-center border-b border-luxury-gold/10">
-        <div className="absolute top-1/2 left-1/2 -z-10 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-luxury-gold/5 blur-[80px]" />
-        
-        <div className={`mb-4 transition-all duration-1000 ease-out ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}>
-          <span className="rounded-full border border-luxury-gold px-4 py-1.5 text-[10px] font-bold tracking-[0.2em] text-luxury-gold uppercase">✦ Welcome to Golden Hotel ✦</span>
+      <section className="relative z-0 flex flex-col items-center justify-center py-8 px-6 text-center border-b border-luxury-gold/10 overflow-hidden">
+        {/* Hero Background Image with Overlay */}
+        <div className="absolute inset-0 -z-20">
+          <img
+            src="/piza.jpg"
+            alt="Hero Background"
+            className="h-full w-full object-cover"
+          />
+          <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.65)" }} />
         </div>
 
-        <h1 className="font-serif text-3xl sm:text-4xl font-light tracking-wide text-white mb-2">
+        <div className="absolute top-1/2 left-1/2 -z-10 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-luxury-gold/5 blur-[80px]" />
+
+        <h1 className="font-serif text-3xl sm:text-4xl font-light tracking-wide text-white mb-2 relative z-10">
           Discover <span className="text-gold-gradient font-normal italic">Our Menu</span>
         </h1>
-        <p className="text-xs sm:text-sm font-light tracking-widest text-gray-400 uppercase">Order from your table or hotel room</p>
-        <div className="relative mt-4 w-full max-w-md">
-          <input ref={searchInputRef} type="text" placeholder="What would you like today?" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} onFocus={handleSearchFocus} className="w-full rounded-full border border-luxury-gold/10 bg-luxury-black/60 py-3 pl-12 pr-6 text-sm text-white placeholder-gray-500 outline-none transition-all duration-300 focus:border-luxury-gold/45 focus:ring-1 focus:ring-luxury-gold/20" />
+        <p className="text-xs sm:text-sm font-light tracking-widest text-gray-400 uppercase relative z-10">Order from your table or hotel room</p>
+        <div className="relative mt-4 w-full max-w-md z-10">
+          <input ref={searchInputRef} type="text" placeholder="What would you like today?" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} onFocus={handleSearchFocus} className="w-full rounded-full border border-luxury-gold/10 bg-luxury-green/60 py-3 pl-12 pr-6 text-sm text-white placeholder-gray-500 outline-none transition-all duration-300 focus:border-luxury-gold/45 focus:ring-1 focus:ring-luxury-gold/20" />
           <Search className="absolute left-4 top-3.5 h-4.5 w-4.5 text-gray-500" />
         </div>
-      </section>
 
-      {/* Today's Special */}
-      {specialItem && (
-        <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 pb-4 pt-2">
-          <div className="bg-[#1A1A1A] rounded-lg border border-luxury-gold/10 flex flex-row items-center justify-between gap-2 p-2 sm:p-3 relative overflow-hidden">
-            <div className="absolute left-0 top-0 bottom-0 w-[1px] bg-luxury-gold" />
-            
-            <div className="flex flex-row items-center gap-3 pl-2 flex-1 min-w-0">
-              {specialItem.image ? (
-                <img src={specialItem.image} alt={specialItem.name} className="w-12 h-12 sm:w-[60px] sm:h-[60px] rounded object-cover border border-luxury-gold/20 shrink-0" />
-              ) : (
-                <div className="w-12 h-12 sm:w-[60px] sm:h-[60px] rounded bg-luxury-black flex items-center justify-center border border-luxury-gold/20 shrink-0"><span className="text-luxury-gold text-sm">🍽️</span></div>
-              )}
-              <div className="flex flex-col justify-center min-w-0">
-                <div className="text-luxury-gold text-[8px] sm:text-[10px] font-bold tracking-widest uppercase mb-0.5">⚡ Today's Special</div>
-                <div className="text-white font-bold text-xs sm:text-sm truncate">{specialItem.name}</div>
-                <div className="text-luxury-gold font-serif text-[10px] sm:text-xs">ETB {Number(specialItem.price).toFixed(2)}</div>
+        {/* Today's Special Banner inside Hero Section */}
+        {specialItem && (
+          <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 mt-6 relative z-10">
+            <div className="bg-[#112920]/95 backdrop-blur-sm rounded-lg border border-luxury-gold/10 flex flex-row items-center justify-between gap-2 p-2 sm:p-3 relative overflow-hidden">
+              <div className="absolute left-0 top-0 bottom-0 w-[1px] bg-luxury-gold" />
+
+              <div className="flex flex-row items-center gap-3 pl-2 flex-1 min-w-0">
+                {specialItem.image ? (
+                  <img src={specialItem.image} alt={specialItem.name} className="w-12 h-12 sm:w-[60px] sm:h-[60px] rounded object-cover border border-luxury-gold/20 shrink-0" />
+                ) : (
+                  <div className="w-12 h-12 sm:w-[60px] sm:h-[60px] rounded bg-luxury-green flex items-center justify-center border border-luxury-gold/20 shrink-0"><span className="text-luxury-gold text-sm">🍽️</span></div>
+                )}
+                <div className="flex flex-col justify-center min-w-0 text-left">
+                  <div className="text-luxury-gold text-[8px] sm:text-[10px] font-bold tracking-widest uppercase mb-0.5">⚡ Today's Special</div>
+                  <div className="text-white font-bold text-xs sm:text-sm truncate">{specialItem.name}</div>
+                  <div className="text-luxury-gold font-serif text-[10px] sm:text-xs">ETB {Number(specialItem.price).toFixed(2)}</div>
+                </div>
               </div>
+              <button onClick={() => handleOrderSpecial(specialItem)} className="bg-luxury-gold text-luxury-green font-bold uppercase tracking-widest text-[9px] sm:text-xs py-2 px-3 sm:py-2.5 sm:px-5 rounded hover:bg-luxury-gold-hover hover:shadow-[0_0_10px_rgba(201,168,76,0.2)] transition-all shrink-0">
+                Order Now
+              </button>
             </div>
-            <button onClick={() => handleOrderSpecial(specialItem)} className="bg-luxury-gold text-luxury-black font-bold uppercase tracking-widest text-[9px] sm:text-xs py-2 px-3 sm:py-2.5 sm:px-5 rounded hover:bg-luxury-gold-hover hover:shadow-[0_0_10px_rgba(201,168,76,0.2)] transition-all shrink-0">
-              Order Now
-            </button>
           </div>
-        </div>
-      )}
+        )}
+      </section>
 
       <CategoryFilters categories={categories} selectedCategory={selectedCategory} onSelectCategory={setSelectedCategory} />
       <main ref={resultsRef} className="mx-auto max-w-7xl px-6 py-12 sm:px-8" style={{ paddingBottom: keyboardPadding > 0 ? `${keyboardPadding}px` : undefined }}>

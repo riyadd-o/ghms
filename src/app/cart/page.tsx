@@ -77,7 +77,7 @@ function CartPageContent() {
         const order = await res.json();
         setPlacedOrder(order);
         clearCart();
-        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ["#C9A84C", "#FFFFFF", "#111111"] });
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ["#D4AF37", "#FFFFFF", "#0F2318"] });
       } else {
         setTableError("Failed to place order. Please try again.");
       }
@@ -90,9 +90,9 @@ function CartPageContent() {
 
   if (placedOrder) {
     return (
-      <div className="flex flex-1 flex-col items-center justify-center bg-luxury-black px-6 py-16 text-center">
+      <div className="flex flex-1 flex-col items-center justify-center bg-luxury-green px-6 py-16 text-center">
         <div className="absolute top-1/3 left-1/2 -z-10 h-72 w-72 -translate-x-1/2 rounded-full bg-luxury-gold/5 blur-[100px]" />
-        <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border border-luxury-gold bg-luxury-charcoal/50 text-luxury-gold shadow-[0_0_20px_rgba(201,168,76,0.3)]">
+        <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border border-luxury-gold bg-luxury-green-secondary/50 text-luxury-gold shadow-[0_0_20px_rgba(201,168,76,0.3)]">
           <CheckCircle className="h-10 w-10 animate-bounce" />
         </div>
         <p className="text-[10px] font-semibold tracking-[0.25em] text-luxury-gold uppercase mb-2">Order Placed Successfully</p>
@@ -109,7 +109,7 @@ function CartPageContent() {
               const isPast = ["new", "in-progress", "delivered"].indexOf(placedOrder.status) >= index;
               return (
                 <div key={status} className="flex flex-col items-center gap-2">
-                  <div className={`h-8 w-8 rounded-full flex items-center justify-center border-2 transition-all duration-500 bg-luxury-black ${isPast ? 'border-luxury-gold text-luxury-gold' : 'border-gray-700 text-gray-600'} ${isActive ? 'shadow-[0_0_15px_rgba(201,168,76,0.5)] scale-110 bg-luxury-charcoal/80' : ''}`}>
+                  <div className={`h-8 w-8 rounded-full flex items-center justify-center border-2 transition-all duration-500 bg-luxury-green ${isPast ? 'border-luxury-gold text-luxury-gold' : 'border-gray-700 text-gray-600'} ${isActive ? 'shadow-[0_0_15px_rgba(201,168,76,0.5)] scale-110 bg-luxury-green-secondary/80' : ''}`}>
                     {isPast && !isActive ? <CheckCircle className="h-4 w-4" /> : <Clock className="h-4 w-4" />}
                   </div>
                   <span className={`text-[10px] uppercase font-bold tracking-wider mt-1 ${isActive ? 'text-luxury-gold' : isPast ? 'text-gray-300' : 'text-gray-600'}`}>
@@ -121,7 +121,7 @@ function CartPageContent() {
           </div>
         </div>
 
-        <div className="mb-12 w-full max-w-md rounded-lg border border-luxury-gold/15 bg-luxury-charcoal/50 p-6 text-left">
+        <div className="mb-12 w-full max-w-md rounded-lg border border-luxury-gold/15 bg-luxury-green-secondary/50 p-6 text-left">
           <div className="flex justify-between border-b border-luxury-gold/10 pb-4 mb-4">
             <div>
               <p className="text-xs text-gray-500 uppercase tracking-wider">Order ID</p>
@@ -149,7 +149,7 @@ function CartPageContent() {
           </div>
         </div>
         <div className="flex flex-col sm:flex-row gap-4 w-full max-w-sm justify-center">
-          <Link href="/" className="flex items-center justify-center gap-2 rounded px-6 py-3 text-xs font-semibold tracking-widest text-luxury-black bg-luxury-gold uppercase transition-all duration-300 hover:bg-luxury-gold-hover hover:shadow-[0_0_10px_rgba(201,168,76,0.2)]">View Menu</Link>
+          <Link href="/" className="flex items-center justify-center gap-2 rounded px-6 py-3 text-xs font-semibold tracking-widest text-luxury-green bg-luxury-gold uppercase transition-all duration-300 hover:bg-luxury-gold-hover hover:shadow-[0_0_10px_rgba(201,168,76,0.2)]">View Menu</Link>
         </div>
       </div>
     );
@@ -162,14 +162,14 @@ function CartPageContent() {
       </Link>
       <h1 className="font-serif text-3xl font-light text-white mb-8">Order <span className="text-gold-gradient font-normal italic">Review</span></h1>
       {cart.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 text-center border border-dashed border-luxury-gold/15 rounded-lg bg-luxury-charcoal/10">
+        <div className="flex flex-col items-center justify-center py-20 text-center border border-dashed border-luxury-gold/15 rounded-lg bg-luxury-green-secondary/10">
           <p className="font-serif text-lg text-gray-500 italic mb-4">Your cart is empty.</p>
-          <Link href="/" className="rounded bg-luxury-gold px-6 py-3 text-xs font-semibold tracking-widest text-luxury-black uppercase transition-all duration-300 hover:bg-luxury-gold-hover">Browse Menu</Link>
+          <Link href="/" className="rounded bg-luxury-gold px-6 py-3 text-xs font-semibold tracking-widest text-luxury-green uppercase transition-all duration-300 hover:bg-luxury-gold-hover">Browse Menu</Link>
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
-            <div className="rounded-lg border border-luxury-gold/10 bg-luxury-charcoal/30 divide-y divide-luxury-gold/10">
+            <div className="rounded-lg border border-luxury-gold/10 bg-luxury-green-secondary/30 divide-y divide-luxury-gold/10">
               {cart.map(({ item, quantity }) => (
                 <div key={item.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-6 gap-4">
                   <div className="flex items-center gap-4">
@@ -180,7 +180,7 @@ function CartPageContent() {
                     </div>
                   </div>
                   <div className="flex items-center justify-between sm:justify-end gap-6">
-                    <div className="flex items-center rounded border border-luxury-gold/20 bg-luxury-black/40">
+                    <div className="flex items-center rounded border border-luxury-gold/20 bg-luxury-green/40">
                       <button onClick={() => updateCartQuantity(item.id, quantity - 1)} className="flex h-8 w-8 items-center justify-center text-gray-400 hover:text-white" aria-label="Decrease quantity"><Minus className="h-3 w-3" /></button>
                       <span className="w-8 text-center text-xs font-medium text-white">{quantity}</span>
                       <button onClick={() => updateCartQuantity(item.id, quantity + 1)} className="flex h-8 w-8 items-center justify-center text-gray-400 hover:text-white" aria-label="Increase quantity"><Plus className="h-3 w-3" /></button>
@@ -192,22 +192,22 @@ function CartPageContent() {
               ))}
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="rounded-lg border border-luxury-gold/10 bg-luxury-charcoal/30 p-6 flex flex-col">
+              <div className="rounded-lg border border-luxury-gold/10 bg-luxury-green-secondary/30 p-6 flex flex-col">
                 <label className="text-xs font-semibold tracking-wider text-luxury-gold uppercase mb-4">Delivery Location</label>
-                <div className="flex bg-luxury-black/40 rounded p-1 mb-4 border border-luxury-gold/20">
-                  <button onClick={() => setLocationType("Table")} className={`flex-1 rounded py-2 text-xs font-semibold tracking-widest uppercase transition-all ${locationType === "Table" ? "bg-luxury-gold text-luxury-black shadow-sm" : "text-gray-400 hover:text-white"}`}>Table</button>
-                  <button onClick={() => setLocationType("Room")} className={`flex-1 rounded py-2 text-xs font-semibold tracking-widest uppercase transition-all ${locationType === "Room" ? "bg-luxury-gold text-luxury-black shadow-sm" : "text-gray-400 hover:text-white"}`}>Room</button>
+                <div className="flex bg-luxury-green/40 rounded p-1 mb-4 border border-luxury-gold/20">
+                  <button onClick={() => setLocationType("Table")} className={`flex-1 rounded py-2 text-xs font-semibold tracking-widest uppercase transition-all ${locationType === "Table" ? "bg-luxury-gold text-luxury-green shadow-sm" : "text-gray-400 hover:text-white"}`}>Table</button>
+                  <button onClick={() => setLocationType("Room")} className={`flex-1 rounded py-2 text-xs font-semibold tracking-widest uppercase transition-all ${locationType === "Room" ? "bg-luxury-gold text-luxury-green shadow-sm" : "text-gray-400 hover:text-white"}`}>Room</button>
                 </div>
-                <input type="number" inputMode="numeric" pattern="[0-9]*" placeholder={locationType === "Table" ? "Please enter your table number e.g. 4" : "Please enter your room number e.g. 343"} value={locationNumber} onKeyDown={(e) => { if (['e','E','+','-','.'].includes(e.key)) e.preventDefault(); }} onChange={(e) => { const numericValue = e.target.value.replace(/[^0-9]/g, ""); setLocationNumber(numericValue); if (tableError) setTableError(""); }} className={`w-full rounded border ${tableError ? 'border-red-500' : 'border-luxury-gold/25'} bg-luxury-black/40 p-3 text-sm text-white placeholder-gray-600 outline-none focus:border-luxury-gold [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`} />
+                <input type="number" inputMode="numeric" pattern="[0-9]*" placeholder={locationType === "Table" ? "Please enter your table number e.g. 4" : "Please enter your room number e.g. 343"} value={locationNumber} onKeyDown={(e) => { if (['e','E','+','-','.'].includes(e.key)) e.preventDefault(); }} onChange={(e) => { const numericValue = e.target.value.replace(/[^0-9]/g, ""); setLocationNumber(numericValue); if (tableError) setTableError(""); }} className={`w-full rounded border ${tableError ? 'border-red-500' : 'border-luxury-gold/25'} bg-luxury-green/40 p-3 text-sm text-white placeholder-gray-600 outline-none focus:border-luxury-gold [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`} />
                 {tableError ? (<p className="text-xs text-red-500 mt-2 font-medium">{tableError}</p>) : (<p className="text-[10px] text-gray-500 mt-2">Please confirm your {locationType.toLowerCase()} number so we can deliver your order.</p>)}
               </div>
-              <div className="rounded-lg border border-luxury-gold/10 bg-luxury-charcoal/30 p-6 flex flex-col">
+              <div className="rounded-lg border border-luxury-gold/10 bg-luxury-green-secondary/30 p-6 flex flex-col">
                 <label className="text-xs font-semibold tracking-wider text-luxury-gold uppercase mb-2">Additional Requests</label>
-                <textarea placeholder="Allergies, preferences, or special requests..." value={specialInstructions} onChange={(e) => setSpecialInstructions(e.target.value)} rows={3} className="w-full rounded border border-luxury-gold/25 bg-luxury-black/40 p-3 text-sm text-white placeholder-gray-600 outline-none focus:border-luxury-gold resize-none" />
+                <textarea placeholder="Allergies, preferences, or special requests..." value={specialInstructions} onChange={(e) => setSpecialInstructions(e.target.value)} rows={3} className="w-full rounded border border-luxury-gold/25 bg-luxury-green/40 p-3 text-sm text-white placeholder-gray-600 outline-none focus:border-luxury-gold resize-none" />
               </div>
             </div>
           </div>
-          <div className="rounded-lg border border-luxury-gold/15 bg-luxury-charcoal/35 p-6 h-fit">
+          <div className="rounded-lg border border-luxury-gold/15 bg-luxury-green-secondary/35 p-6 h-fit">
             <h2 className="font-serif text-lg font-semibold text-white tracking-wide border-b border-luxury-gold/10 pb-4 mb-4">Order Summary</h2>
             <div className="space-y-3 text-sm border-b border-luxury-gold/10 pb-4 mb-4">
               <div className="flex justify-between text-gray-400"><span>Items Total ({totalItems} items)</span><span>ETB {subtotal.toFixed(2)}</span></div>
@@ -216,8 +216,8 @@ function CartPageContent() {
               <span className="text-base text-white font-medium">Total</span>
               <span className="font-serif text-2xl font-bold text-luxury-gold">ETB {total.toFixed(2)}</span>
             </div>
-            <button onClick={handlePlaceOrder} disabled={isSubmitting} className="flex w-full items-center justify-center gap-2 rounded bg-luxury-gold py-4 text-xs font-semibold tracking-widest text-luxury-black uppercase transition-all duration-300 hover:bg-luxury-gold-hover disabled:bg-gray-800 disabled:text-gray-500 hover:shadow-[0_0_20px_rgba(201,168,76,0.25)]">
-              {isSubmitting ? (<div className="h-4 w-4 animate-spin rounded-full border-t border-luxury-black" />) : (<span>Place Order</span>)}
+            <button onClick={handlePlaceOrder} disabled={isSubmitting} className="flex w-full items-center justify-center gap-2 rounded bg-luxury-gold py-4 text-xs font-semibold tracking-widest text-luxury-green uppercase transition-all duration-300 hover:bg-luxury-gold-hover disabled:bg-gray-800 disabled:text-gray-500 hover:shadow-[0_0_20px_rgba(201,168,76,0.25)]">
+              {isSubmitting ? (<div className="h-4 w-4 animate-spin rounded-full border-t border-luxury-green" />) : (<span>Place Order</span>)}
             </button>
             <p className="text-[10px] text-center text-gray-500 mt-4 leading-relaxed">By confirming, your order will be sent to the kitchen. Payment is handled at checkout or added to your room bill.</p>
           </div>
@@ -229,7 +229,7 @@ function CartPageContent() {
 
 export default function CartPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-luxury-black flex flex-col items-center justify-center"><div className="h-10 w-10 animate-spin rounded-full border-t-2 border-luxury-gold" /><p className="mt-4 font-serif text-sm text-luxury-gold tracking-widest uppercase">Loading Cart...</p></div>}>
+    <Suspense fallback={<div className="min-h-screen bg-luxury-green flex flex-col items-center justify-center"><div className="h-10 w-10 animate-spin rounded-full border-t-2 border-luxury-gold" /><p className="mt-4 font-serif text-sm text-luxury-gold tracking-widest uppercase">Loading Cart...</p></div>}>
       <CartPageContent />
     </Suspense>
   );

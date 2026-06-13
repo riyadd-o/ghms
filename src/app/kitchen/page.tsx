@@ -82,7 +82,7 @@ export default function KitchenDashboard() {
     const getPriority = (m: number) => { if (m <= 5) return "Normal"; if (m <= 15) return "Medium"; return "URGENT"; };
 
     return (
-      <div className={`rounded-lg border bg-luxury-charcoal/40 p-5 transition-all duration-300 ${style.border} ${style.glow}`}>
+      <div className={`rounded-lg border bg-luxury-green-secondary/40 p-5 transition-all duration-300 ${style.border} ${style.glow}`}>
         <div className="flex items-start justify-between border-b border-luxury-gold/10 pb-3 mb-3">
           <div>
             <span className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">Order ID</span>
@@ -102,7 +102,7 @@ export default function KitchenDashboard() {
           ))}
         </div>
         {order.special_instructions && order.special_instructions.trim() !== "" && (
-          <div className="mb-4 rounded border border-luxury-gold/10 bg-luxury-black/30 p-2.5">
+          <div className="mb-4 rounded border border-luxury-gold/10 bg-luxury-green/30 p-2.5">
             <span className="text-[9px] font-bold uppercase tracking-wider text-luxury-gold flex items-center gap-1 mb-1">
               <AlertTriangle className="h-3 w-3 shrink-0 text-luxury-gold" /><span>Notes</span>
             </span>
@@ -117,7 +117,7 @@ export default function KitchenDashboard() {
           </div>
           <div className="flex gap-2">
             {order.status === "new" && (
-              <button onClick={() => updateOrderStatus(order.id, "in-progress")} className="flex h-8 items-center gap-1 rounded bg-luxury-gold px-3 text-[10px] font-bold uppercase tracking-widest text-luxury-black transition-all hover:bg-luxury-gold-hover" title="Start Preparation">
+              <button onClick={() => updateOrderStatus(order.id, "in-progress")} className="flex h-8 items-center gap-1 rounded bg-luxury-gold px-3 text-[10px] font-bold uppercase tracking-widest text-luxury-green transition-all hover:bg-luxury-gold-hover" title="Start Preparation">
                 <Play className="h-3 w-3 fill-current" /><span>Start</span>
               </button>
             )}
@@ -162,18 +162,18 @@ export default function KitchenDashboard() {
               <span className="relative flex h-2.5 w-2.5"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span><span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500"></span></span>
               <span>Live</span>
             </div>
-            <div className="rounded border border-luxury-gold/15 bg-luxury-charcoal/20 px-3 py-1.5 text-[10px] font-mono text-luxury-gold">Auto-Refreshed: {lastRefreshed}</div>
+            <div className="rounded border border-luxury-gold/15 bg-luxury-green-secondary/20 px-3 py-1.5 text-[10px] font-mono text-luxury-gold">Auto-Refreshed: {lastRefreshed}</div>
             <StaffLogoutButton />
           </div>
         </div>
 
         {/* MOBILE TABS */}
         <div className="md:hidden mb-6">
-          <div className="flex bg-luxury-black/40 rounded-lg p-1 border border-luxury-gold/10">
+          <div className="flex bg-luxury-green/40 rounded-lg p-1 border border-luxury-gold/10">
             {([["new", "New", newOrders.length], ["in-progress", "In Progress", inProgressOrders.length], ["delivered", "Delivered", deliveredOrders.length]] as const).map(([key, label, count]) => (
-              <button key={key} onClick={() => setMobileTab(key)} className={`flex-1 flex items-center justify-center gap-1.5 rounded-md py-2.5 text-[10px] font-semibold tracking-widest uppercase transition-all ${mobileTab === key ? "bg-luxury-gold text-luxury-black shadow-sm" : "text-gray-400 hover:text-white"}`}>
+              <button key={key} onClick={() => setMobileTab(key)} className={`flex-1 flex items-center justify-center gap-1.5 rounded-md py-2.5 text-[10px] font-semibold tracking-widest uppercase transition-all ${mobileTab === key ? "bg-luxury-gold text-luxury-green shadow-sm" : "text-gray-400 hover:text-white"}`}>
                 <span>{label}</span>
-                <span className={`rounded-full px-1.5 py-0.5 text-[9px] font-bold ${mobileTab === key ? "bg-luxury-black/20 text-luxury-black" : "bg-luxury-gold/10 text-luxury-gold border border-luxury-gold/25"}`}>{count}</span>
+                <span className={`rounded-full px-1.5 py-0.5 text-[9px] font-bold ${mobileTab === key ? "bg-luxury-green/20 text-luxury-green" : "bg-luxury-gold/10 text-luxury-gold border border-luxury-gold/25"}`}>{count}</span>
               </button>
             ))}
           </div>
@@ -191,7 +191,7 @@ export default function KitchenDashboard() {
             { title: "In Progress", items: inProgressOrders, dot: "bg-amber-500", badgeCls: "bg-amber-500/10 border-amber-500/25 text-amber-400" },
             { title: "Delivered", items: deliveredOrders, dot: "bg-emerald-500 animate-pulse", badgeCls: "bg-emerald-500/10 border-emerald-500/25 text-emerald-400" },
           ]).map((col) => (
-            <div key={col.title} className="flex flex-col rounded-lg border border-luxury-gold/10 bg-luxury-black/30 p-4">
+            <div key={col.title} className="flex flex-col rounded-lg border border-luxury-gold/10 bg-luxury-green/30 p-4">
               <div className="mb-4 flex items-center justify-between border-b border-luxury-gold/10 pb-3">
                 <h3 className="font-serif text-base font-semibold text-white tracking-wide flex items-center gap-2">
                   <span className={`h-2 w-2 rounded-full ${col.dot}`} /><span>{col.title}</span>

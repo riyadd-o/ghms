@@ -249,7 +249,7 @@ export default function AdminPanel() {
       const url = await QRCode.toDataURL(targetUrl, {
         width: 400,
         margin: 2,
-        color: { dark: "#0A0A0A", light: "#FFFFFF" },
+        color: { dark: "#0B1F1A", light: "#FFFFFF" },
       });
       setQrUrl(url);
       setQrGenerated(true);
@@ -325,12 +325,12 @@ export default function AdminPanel() {
 
       {/* Delete Confirmation Modal */}
       {confirmDelete && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-luxury-black/80 backdrop-blur-sm p-4">
-          <div className="w-full max-w-sm rounded-xl border border-luxury-gold/20 bg-[#1A1A1A] p-6 shadow-2xl text-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-luxury-green/80 backdrop-blur-sm p-4">
+          <div className="w-full max-w-sm rounded-xl border border-luxury-gold/20 bg-[#112920] p-6 shadow-2xl text-center">
             <h2 className="font-serif text-xl font-semibold text-white mb-2">Confirm Delete</h2>
             <p className="text-sm text-gray-400 mb-6">Are you sure you want to delete this? This action cannot be undone.</p>
             <div className="flex gap-3">
-              <button onClick={() => setConfirmDelete(null)} className="flex-1 rounded border border-luxury-gold/20 bg-luxury-charcoal/50 py-2.5 text-xs font-semibold tracking-widest text-luxury-gold uppercase hover:border-luxury-gold hover:text-white transition-all">
+              <button onClick={() => setConfirmDelete(null)} className="flex-1 rounded border border-luxury-gold/20 bg-luxury-green-secondary/50 py-2.5 text-xs font-semibold tracking-widest text-luxury-gold uppercase hover:border-luxury-gold hover:text-white transition-all">
                 Cancel
               </button>
               <button onClick={handleConfirmDelete} className="flex-1 rounded bg-rose-600 py-2.5 text-xs font-semibold tracking-widest text-white uppercase hover:bg-rose-700 transition-all shadow-[0_0_12px_rgba(225,29,72,0.25)]">
@@ -343,8 +343,8 @@ export default function AdminPanel() {
 
       {/* Add/Edit Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-luxury-black/80 backdrop-blur-sm p-4">
-          <div className="w-full max-w-lg rounded-xl border border-luxury-gold/20 bg-[#1A1A1A] p-6 shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-luxury-green/80 backdrop-blur-sm p-4">
+          <div className="w-full max-w-lg rounded-xl border border-luxury-gold/20 bg-[#112920] p-6 shadow-2xl">
             <div className="flex items-center justify-between border-b border-luxury-gold/15 pb-4 mb-6">
               <h2 className="font-serif text-xl font-light text-white">
                 {editingItem ? "Edit" : "Add"} <span className="text-gold-gradient font-normal italic">Menu Item</span>
@@ -363,7 +363,7 @@ export default function AdminPanel() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. Wagyu Ribeye"
-                  className="w-full rounded border border-luxury-gold/20 bg-luxury-black/50 p-3 text-xs text-white placeholder-gray-600 focus:border-luxury-gold focus:outline-none transition-all"
+                  className="w-full rounded border border-luxury-gold/20 bg-luxury-green/50 p-3 text-xs text-white placeholder-gray-600 focus:border-luxury-gold focus:outline-none transition-all"
                 />
               </div>
 
@@ -377,7 +377,7 @@ export default function AdminPanel() {
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
                     placeholder="e.g. 1200"
-                    className="w-full rounded border border-luxury-gold/20 bg-luxury-black/50 p-3 text-xs text-white placeholder-gray-600 focus:border-luxury-gold focus:outline-none transition-all"
+                    className="w-full rounded border border-luxury-gold/20 bg-luxury-green/50 p-3 text-xs text-white placeholder-gray-600 focus:border-luxury-gold focus:outline-none transition-all"
                   />
                 </div>
                 <div>
@@ -385,15 +385,15 @@ export default function AdminPanel() {
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    className="w-full rounded border border-luxury-gold/20 bg-luxury-black/50 p-3 text-xs text-white focus:border-luxury-gold focus:outline-none transition-all appearance-none"
+                    className="w-full rounded border border-luxury-gold/20 bg-luxury-green/50 p-3 text-xs text-white focus:border-luxury-gold focus:outline-none transition-all appearance-none"
                   >
                     {categories.map((cat) => (
-                      <option key={cat.id} value={cat.name} className="bg-luxury-black text-white">
+                      <option key={cat.id} value={cat.name} className="bg-luxury-green text-white">
                         {cat.name}
                       </option>
                     ))}
                     {categories.length === 0 && (
-                      <option value="Starters" className="bg-luxury-black text-white">Starters</option>
+                      <option value="Starters" className="bg-luxury-green text-white">Starters</option>
                     )}
                   </select>
                 </div>
@@ -406,7 +406,7 @@ export default function AdminPanel() {
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Describe the dish, ingredients, preparation..."
                   rows={3}
-                  className="w-full rounded border border-luxury-gold/20 bg-luxury-black/50 p-3 text-xs text-white placeholder-gray-600 focus:border-luxury-gold focus:outline-none transition-all resize-none"
+                  className="w-full rounded border border-luxury-gold/20 bg-luxury-green/50 p-3 text-xs text-white placeholder-gray-600 focus:border-luxury-gold focus:outline-none transition-all resize-none"
                 />
               </div>
 
@@ -420,7 +420,7 @@ export default function AdminPanel() {
                     type="file"
                     accept="image/*"
                     onChange={handleImageUpload}
-                    className="text-xs text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:border-luxury-gold/20 file:bg-luxury-charcoal/50 file:text-luxury-gold file:text-xs file:font-semibold file:uppercase file:tracking-wider hover:file:bg-luxury-charcoal/80 cursor-pointer"
+                    className="text-xs text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:border-luxury-gold/20 file:bg-luxury-green-secondary/50 file:text-luxury-gold file:text-xs file:font-semibold file:uppercase file:tracking-wider hover:file:bg-luxury-green-secondary/80 cursor-pointer"
                   />
                 </div>
               </div>
@@ -431,7 +431,7 @@ export default function AdminPanel() {
                   id="available"
                   checked={available}
                   onChange={(e) => setAvailable(e.target.checked)}
-                  className="rounded border-luxury-gold/20 bg-luxury-black text-luxury-gold focus:ring-0"
+                  className="rounded border-luxury-gold/20 bg-luxury-green text-luxury-gold focus:ring-0"
                 />
                 <label htmlFor="available" className="text-[11px] font-semibold uppercase tracking-wider text-gray-300 select-none cursor-pointer">
                   Available for ordering
@@ -442,13 +442,13 @@ export default function AdminPanel() {
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="flex-1 rounded border border-luxury-gold/20 bg-luxury-charcoal/50 py-3 text-xs font-semibold tracking-widest text-luxury-gold uppercase hover:border-luxury-gold hover:text-white transition-all"
+                  className="flex-1 rounded border border-luxury-gold/20 bg-luxury-green-secondary/50 py-3 text-xs font-semibold tracking-widest text-luxury-gold uppercase hover:border-luxury-gold hover:text-white transition-all"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 rounded bg-luxury-gold py-3 text-xs font-semibold tracking-widest text-luxury-black uppercase hover:bg-luxury-gold-hover hover:shadow-[0_0_12px_rgba(201,168,76,0.25)] transition-all"
+                  className="flex-1 rounded bg-luxury-gold py-3 text-xs font-semibold tracking-widest text-luxury-green uppercase hover:bg-luxury-gold-hover hover:shadow-[0_0_12px_rgba(201,168,76,0.25)] transition-all"
                 >
                   {editingItem ? "Save Changes" : "Add Item"}
                 </button>
@@ -478,28 +478,28 @@ export default function AdminPanel() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-           <div className="bg-luxury-charcoal/40 border border-luxury-gold/10 rounded-lg p-4">
+           <div className="bg-luxury-green-secondary/40 border border-luxury-gold/10 rounded-lg p-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-gray-400 text-[10px] font-semibold tracking-wider uppercase">Total Revenue</span>
                 <DollarSign className="h-4 w-4 text-luxury-gold" />
               </div>
               <p className="font-serif text-2xl font-bold text-white">ETB {totalRevenue.toFixed(2)}</p>
            </div>
-           <div className="bg-luxury-charcoal/40 border border-luxury-gold/10 rounded-lg p-4">
+           <div className="bg-luxury-green-secondary/40 border border-luxury-gold/10 rounded-lg p-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-gray-400 text-[10px] font-semibold tracking-wider uppercase">Total Orders</span>
                 <TrendingUp className="h-4 w-4 text-luxury-gold" />
               </div>
               <p className="font-serif text-2xl font-bold text-white">{totalOrders}</p>
            </div>
-           <div className="bg-luxury-charcoal/40 border border-luxury-gold/10 rounded-lg p-4">
+           <div className="bg-luxury-green-secondary/40 border border-luxury-gold/10 rounded-lg p-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-gray-400 text-[10px] font-semibold tracking-wider uppercase">Delivered</span>
                 <Package className="h-4 w-4 text-emerald-500" />
               </div>
               <p className="font-serif text-2xl font-bold text-white">{deliveredCount}</p>
            </div>
-           <div className="bg-luxury-charcoal/40 border border-luxury-gold/10 rounded-lg p-4">
+           <div className="bg-luxury-green-secondary/40 border border-luxury-gold/10 rounded-lg p-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-gray-400 text-[10px] font-semibold tracking-wider uppercase">Pending</span>
                 <Clock className="h-4 w-4 text-amber-500" />
@@ -510,7 +510,7 @@ export default function AdminPanel() {
 
         <div className="flex flex-col md:flex-row flex-1 gap-8">
           {/* Sidebar (desktop) */}
-          <aside className="hidden md:flex w-64 border-r border-luxury-gold/15 bg-luxury-charcoal/30 flex-col rounded-l-lg shrink-0">
+          <aside className="hidden md:flex w-64 border-r border-luxury-gold/15 bg-luxury-green-secondary/30 flex-col rounded-l-lg shrink-0">
           <div className="p-6 border-b border-luxury-gold/10">
             <div className="flex items-center gap-2 text-white">
               <Shield className="h-5 w-5 text-luxury-gold" />
@@ -526,8 +526,8 @@ export default function AdminPanel() {
                 onClick={() => setActiveTab(key)}
                 className={`flex w-full items-center gap-3 rounded px-4 py-3 text-sm font-semibold tracking-wide transition-all ${
                   activeTab === key
-                    ? "bg-luxury-gold text-luxury-black shadow-[0_0_12px_rgba(201,168,76,0.15)] font-bold"
-                    : "text-gray-400 hover:bg-luxury-charcoal/60 hover:text-white"
+                    ? "bg-luxury-gold text-luxury-green shadow-[0_0_12px_rgba(201,168,76,0.15)] font-bold"
+                    : "text-gray-400 hover:bg-luxury-green-secondary/60 hover:text-white"
                 }`}
               >
                 {key === "menu" && <ShoppingBag className="h-4.5 w-4.5" />}
@@ -544,13 +544,13 @@ export default function AdminPanel() {
         <main className="flex-1">
           {/* Mobile Tabs */}
           <div className="md:hidden mb-6">
-            <div className="flex bg-luxury-black/40 rounded-lg p-1 border border-luxury-gold/10">
+            <div className="flex bg-luxury-green/40 rounded-lg p-1 border border-luxury-gold/10">
               {(["menu", "categories", "orders", "qr"] as const).map((key) => (
                 <button
                   key={key}
                   onClick={() => setActiveTab(key)}
                   className={`flex-1 flex items-center justify-center gap-1.5 rounded-md py-2.5 text-[10px] font-semibold tracking-widest uppercase transition-all ${
-                    activeTab === key ? "bg-luxury-gold text-luxury-black shadow-sm" : "text-gray-400 hover:text-white"
+                    activeTab === key ? "bg-luxury-gold text-luxury-green shadow-sm" : "text-gray-400 hover:text-white"
                   }`}
                 >
                   {key}
@@ -567,14 +567,14 @@ export default function AdminPanel() {
                   <h1 className="font-serif text-2xl text-white tracking-wide">Menu Items</h1>
                   <p className="text-xs text-gray-500 mt-0.5">Manage items, availability, and tags for your menu.</p>
                 </div>
-                <button onClick={handleOpenAddModal} className="flex items-center justify-center gap-2 rounded bg-luxury-gold px-4 py-2.5 text-xs font-semibold tracking-widest text-luxury-black uppercase transition-all duration-300 hover:bg-luxury-gold-hover hover:shadow-[0_0_12px_rgba(201,168,76,0.25)]">
+                <button onClick={handleOpenAddModal} className="flex items-center justify-center gap-2 rounded bg-luxury-gold px-4 py-2.5 text-xs font-semibold tracking-widest text-luxury-green uppercase transition-all duration-300 hover:bg-luxury-gold-hover hover:shadow-[0_0_12px_rgba(201,168,76,0.25)]">
                   <Plus className="h-4 w-4" />
                   <span>Add New Item</span>
                 </button>
               </div>
-              <div className="overflow-x-auto rounded-lg border border-luxury-gold/10 bg-luxury-charcoal/20">
+              <div className="overflow-x-auto rounded-lg border border-luxury-gold/10 bg-luxury-green-secondary/20">
                 <table className="w-full border-collapse text-left text-sm text-gray-400">
-                  <thead className="border-b border-luxury-gold/15 bg-luxury-black/40 font-serif text-xs font-semibold text-white tracking-widest uppercase">
+                  <thead className="border-b border-luxury-gold/15 bg-luxury-green/40 font-serif text-xs font-semibold text-white tracking-widest uppercase">
                     <tr>
                       <th className="px-6 py-4 w-10"></th>
                       <th className="px-6 py-4">Item</th>
@@ -593,7 +593,7 @@ export default function AdminPanel() {
                         onDragOver={(e) => handleDragOver(e, index)}
                         onDrop={handleDrop}
                         onDragEnd={(e) => handleDrop(e)}
-                        className={`hover:bg-luxury-charcoal/10 transition-colors ${draggedIndex === index ? 'opacity-50 bg-luxury-charcoal/20' : ''}`}
+                        className={`hover:bg-luxury-green-secondary/10 transition-colors ${draggedIndex === index ? 'opacity-50 bg-luxury-green-secondary/20' : ''}`}
                       >
                         <td className="px-4 py-4 cursor-grab active:cursor-grabbing text-gray-500 hover:text-luxury-gold transition-colors">
                           <GripVertical className="h-4 w-4" />
@@ -603,7 +603,7 @@ export default function AdminPanel() {
                             {item.image ? (
                               <img src={item.image} alt={item.name} className="h-10 w-10 rounded object-cover border border-luxury-gold/10" />
                             ) : (
-                              <div className="h-10 w-10 rounded bg-luxury-black/60 border border-luxury-gold/10 flex items-center justify-center">
+                              <div className="h-10 w-10 rounded bg-luxury-green/60 border border-luxury-gold/10 flex items-center justify-center">
                                 <span className="font-serif text-gray-500 uppercase">{item.name.charAt(0)}</span>
                               </div>
                             )}
@@ -640,14 +640,14 @@ export default function AdminPanel() {
                 <h1 className="font-serif text-2xl text-white tracking-wide">Categories</h1>
                 <p className="text-xs text-gray-500 mt-0.5">Manage menu categories.</p>
               </div>
-              <div className="max-w-md bg-luxury-charcoal/30 border border-luxury-gold/10 rounded-lg p-6">
+              <div className="max-w-md bg-luxury-green-secondary/30 border border-luxury-gold/10 rounded-lg p-6">
                 <div className="flex gap-3 mb-6">
-                  <input type="text" value={newCategoryName} onChange={(e) => setNewCategoryName(e.target.value)} placeholder="New category name" className="flex-1 rounded border border-luxury-gold/15 bg-luxury-black/60 p-2.5 text-sm text-white placeholder-gray-600 outline-none focus:border-luxury-gold" />
-                  <button onClick={handleAddCategory} className="rounded bg-luxury-gold px-4 py-2.5 text-xs font-semibold tracking-widest text-luxury-black uppercase hover:bg-luxury-gold-hover hover:shadow-[0_0_12px_rgba(201,168,76,0.25)] transition-all">Add</button>
+                  <input type="text" value={newCategoryName} onChange={(e) => setNewCategoryName(e.target.value)} placeholder="New category name" className="flex-1 rounded border border-luxury-gold/15 bg-luxury-green/60 p-2.5 text-sm text-white placeholder-gray-600 outline-none focus:border-luxury-gold" />
+                  <button onClick={handleAddCategory} className="rounded bg-luxury-gold px-4 py-2.5 text-xs font-semibold tracking-widest text-luxury-green uppercase hover:bg-luxury-gold-hover hover:shadow-[0_0_12px_rgba(201,168,76,0.25)] transition-all">Add</button>
                 </div>
                 <div className="space-y-2">
                   {categories.map((cat) => (
-                    <div key={cat.name} className="flex items-center justify-between p-3 rounded bg-luxury-black/40 border border-luxury-gold/5">
+                    <div key={cat.name} className="flex items-center justify-between p-3 rounded bg-luxury-green/40 border border-luxury-gold/5">
                       <span className="text-sm font-medium text-white">{cat.name}</span>
                       <button onClick={() => handleDeleteCategory(cat)} className="text-gray-500 hover:text-rose-500 p-1 transition-colors" title="Delete Category"><Trash2 className="h-4 w-4" /></button>
                     </div>
@@ -666,26 +666,26 @@ export default function AdminPanel() {
                 <p className="text-xs text-gray-500 mt-0.5">Review past orders. Filter by status or date.</p>
               </div>
               {/* Filter Bar */}
-              <div className="mb-6 flex flex-wrap gap-4 items-center bg-luxury-charcoal/20 border border-luxury-gold/10 rounded-lg p-4">
+              <div className="mb-6 flex flex-wrap gap-4 items-center bg-luxury-green-secondary/20 border border-luxury-gold/10 rounded-lg p-4">
                 <div className="flex items-center gap-2 text-xs"><Filter className="h-4 w-4 text-luxury-gold" /><span className="font-semibold text-gray-400 uppercase tracking-wider">Filters:</span></div>
                 {/* Status filter */}
-                <div className="flex gap-1 bg-luxury-black/60 rounded p-0.5 border border-luxury-gold/10">
+                <div className="flex gap-1 bg-luxury-green/60 rounded p-0.5 border border-luxury-gold/10">
                   {["All", "new", "in-progress", "delivered"].map((status) => (
-                    <button key={status} onClick={() => setStatusFilter(status)} className={`rounded px-3 py-1 text-[10px] font-bold tracking-wider uppercase transition-all ${statusFilter === status ? "bg-luxury-gold text-luxury-black font-extrabold" : "text-gray-400 hover:text-white"}`}>{status}</button>
+                    <button key={status} onClick={() => setStatusFilter(status)} className={`rounded px-3 py-1 text-[10px] font-bold tracking-wider uppercase transition-all ${statusFilter === status ? "bg-luxury-gold text-luxury-green font-extrabold" : "text-gray-400 hover:text-white"}`}>{status}</button>
                   ))}
                 </div>
                 {/* Date filter */}
                 <div className="relative flex items-center gap-2">
                   <Calendar className="h-4 w-4 text-gray-500 absolute left-3 pointer-events-none" />
-                  <input type="date" value={dateFilter} onChange={(e) => setDateFilter(e.target.value)} className="rounded border border-luxury-gold/10 bg-luxury-black/60 py-1.5 pl-9 pr-3 text-[11px] font-semibold text-white outline-none focus:border-luxury-gold" />
+                  <input type="date" value={dateFilter} onChange={(e) => setDateFilter(e.target.value)} className="rounded border border-luxury-gold/10 bg-luxury-green/60 py-1.5 pl-9 pr-3 text-[11px] font-semibold text-white outline-none focus:border-luxury-gold" />
                   {dateFilter && <button onClick={() => setDateFilter("")} className="text-xs text-gray-500 hover:text-white">Clear Date</button>}
                 </div>
                 <div className="ml-auto text-[11px] text-gray-500">Showing {filteredOrders.length} orders</div>
               </div>
               {/* Orders Table */}
-              <div className="overflow-x-auto rounded-lg border border-luxury-gold/10 bg-luxury-charcoal/20">
+              <div className="overflow-x-auto rounded-lg border border-luxury-gold/10 bg-luxury-green-secondary/20">
                 <table className="w-full border-collapse text-left text-sm text-gray-400">
-                  <thead className="border-b border-luxury-gold/15 bg-luxury-black/40 font-serif text-xs font-semibold text-white tracking-widest uppercase">
+                  <thead className="border-b border-luxury-gold/15 bg-luxury-green/40 font-serif text-xs font-semibold text-white tracking-widest uppercase">
                     <tr>
                       <th className="px-6 py-4">Order ID</th>
                       <th className="px-6 py-4">Location</th>
@@ -698,7 +698,7 @@ export default function AdminPanel() {
                   <tbody className="divide-y divide-luxury-gold/5">
                     {filteredOrders.length > 0 ? (
                       filteredOrders.map((order) => (
-                        <tr key={order.id} className="hover:bg-luxury-charcoal/10 transition-colors">
+                        <tr key={order.id} className="hover:bg-luxury-green-secondary/10 transition-colors">
                           <td className="px-6 py-4 font-serif text-sm font-bold text-white">#{order.id}</td>
                           <td className="px-6 py-4 text-xs font-bold text-luxury-gold uppercase">{order.delivery_location}</td>
                           <td className="px-6 py-4"><div className="max-w-xs overflow-hidden text-ellipsis whitespace-nowrap text-xs text-gray-400">{order.items.map((c) => `${c.name} (x${c.quantity})`).join(", ")}</div></td>
@@ -726,24 +726,24 @@ export default function AdminPanel() {
               <div className="grid grid-cols-1 gap-12 lg:grid-cols-5">
                 {/* Generator Controls */}
                 <div className="lg:col-span-2 space-y-6">
-                  <div className="rounded-lg border border-luxury-gold/10 bg-luxury-charcoal/30 p-6">
+                  <div className="rounded-lg border border-luxury-gold/10 bg-luxury-green-secondary/30 p-6">
                     <h2 className="font-serif text-lg font-semibold text-white tracking-wide mb-4 flex items-center gap-2"><QrIcon className="h-5 w-5 text-luxury-gold" /><span>Location Settings</span></h2>
                     <p className="text-xs text-gray-400 leading-relaxed">Click the button below to generate a universal QR code that links directly to the menu. Customers scan it and enter their own table or room number when placing an order.</p>
-                    <button onClick={handleGenerateQR} className="w-full rounded bg-luxury-gold py-3 text-xs font-semibold tracking-widest text-luxury-black uppercase hover:bg-luxury-gold-hover hover:shadow-[0_0_10px_rgba(201,168,76,0.2)] transition-all mt-2">Generate QR Code</button>
+                    <button onClick={handleGenerateQR} className="w-full rounded bg-luxury-gold py-3 text-xs font-semibold tracking-widest text-luxury-green uppercase hover:bg-luxury-gold-hover hover:shadow-[0_0_10px_rgba(201,168,76,0.2)] transition-all mt-2">Generate QR Code</button>
                     {qrGenerated && (
                       <div>
                         <label className="text-[10px] font-bold uppercase tracking-wider text-gray-500 block mb-1 mt-4">Generated Link URL</label>
-                        <div className="w-full rounded border border-luxury-gold/5 bg-luxury-black/35 p-3 text-[10px] font-mono text-gray-400 break-all select-all">{targetUrl}</div>
+                        <div className="w-full rounded border border-luxury-gold/5 bg-luxury-green/35 p-3 text-[10px] font-mono text-gray-400 break-all select-all">{targetUrl}</div>
                       </div>
                     )}
                     <div className="pt-4 flex flex-col sm:flex-row gap-3">
                       {qrGenerated && (
-                        <a href={qrUrl} download={`Golden-Hotel-Menu-QR.png`} className="flex flex-1 items-center justify-center gap-2 rounded bg-luxury-gold py-3 text-xs font-semibold tracking-widest text-luxury-black uppercase hover:bg-luxury-gold-hover hover:shadow-[0_0_10px_rgba(201,168,76,0.2)] transition-all">
+                        <a href={qrUrl} download={`Golden-Hotel-Menu-QR.png`} className="flex flex-1 items-center justify-center gap-2 rounded bg-luxury-gold py-3 text-xs font-semibold tracking-widest text-luxury-green uppercase hover:bg-luxury-gold-hover hover:shadow-[0_0_10px_rgba(201,168,76,0.2)] transition-all">
                           <Download className="h-4 w-4" />
                           <span>Download PNG</span>
                         </a>
                       )}
-                      <button onClick={handlePrint} className="flex flex-1 items-center justify-center gap-2 rounded border border-luxury-gold/20 bg-luxury-charcoal/50 py-3 text-xs font-semibold tracking-widest text-luxury-gold uppercase hover:border-luxury-gold hover:text-white transition-all"> <Printer className="h-4 w-4" /> <span>Print Card</span> </button>
+                      <button onClick={handlePrint} className="flex flex-1 items-center justify-center gap-2 rounded border border-luxury-gold/20 bg-luxury-green-secondary/50 py-3 text-xs font-semibold tracking-widest text-luxury-gold uppercase hover:border-luxury-gold hover:text-white transition-all"> <Printer className="h-4 w-4" /> <span>Print Card</span> </button>
                     </div>
                   </div>
                 </div>
@@ -755,21 +755,21 @@ export default function AdminPanel() {
                       body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
                       body * { visibility: hidden; }
                       #qr-print-card, #qr-print-card * { visibility: visible; }
-                      #qr-print-card { page-break-inside: avoid; break-inside: avoid; position: static; margin: 0 auto; width: 100% !important; max-width: 190mm !important; max-height: 250mm !important; border: 12px solid #C9A84C !important; background-color: #1A1A1A !important; box-sizing: border-box; padding: 10mm !important; display: flex; flex-direction: column; align-items: center; }
+                      #qr-print-card { page-break-inside: avoid; break-inside: avoid; position: static; margin: 0 auto; width: 100% !important; max-width: 190mm !important; max-height: 250mm !important; border: 12px solid #D4AF37 !important; background-color: #112920 !important; box-sizing: border-box; padding: 10mm !important; display: flex; flex-direction: column; align-items: center; }
                       #qr-print-card .star-row { margin-bottom: 5mm; }
-                      #qr-print-card svg { fill: #C9A84C !important; color: #C9A84C !important; }
+                      #qr-print-card svg { fill: #D4AF37 !important; color: #D4AF37 !important; }
                     }
                   `}} />
                   <span className="text-xs font-semibold tracking-wider text-gray-500 uppercase mb-4">Printable Card Preview</span>
-                  <div id="qr-print-card" className="relative flex w-full max-w-sm flex-col items-center overflow-hidden rounded-t-xl bg-[#1A1A1A] shadow-2xl print:shadow-none print:max-w-none border-b-[12px] border-luxury-gold print:justify-center print:p-4">
+                  <div id="qr-print-card" className="relative flex w-full max-w-sm flex-col items-center overflow-hidden rounded-t-xl bg-[#112920] shadow-2xl print:shadow-none print:max-w-none border-b-[12px] border-luxury-gold print:justify-center print:p-4">
                     <div className="star-row flex gap-1 text-luxury-gold print:text-luxury-gold mb-2">{[...Array(5)].map((_, i) => (<svg key={i} className="h-4 w-4 fill-current print:h-3 print:w-3" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" /></svg>))}</div>
                     <div className="absolute top-0 h-2 w-full bg-luxury-gold print:hidden" />
-                    <div className="flex w-full flex-col items-center bg-[#1A1A1A] p-8 print:bg-[#1A1A1A]">
+                    <div className="flex w-full flex-col items-center bg-[#112920] p-8 print:bg-[#112920]">
                       <div className="mb-6 flex gap-1 text-luxury-gold print:text-luxury-gold">{[...Array(5)].map((_, i) => (<svg key={i} className="h-4 w-4 fill-current" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" /></svg>))}</div>
                       <span className="font-serif text-2xl font-bold tracking-widest text-white print:text-white uppercase">Golden Hotel</span>
                       <span className="text-[8px] font-sans tracking-[0.25em] text-luxury-gold print:text-luxury-gold uppercase mt-0.5">Restaurant &amp; Room Service</span>
                     </div>
-                    <div className="flex-1 flex flex-col items-center justify-center my-4 print:my-8 bg-[#1A1A1A]">
+                    <div className="flex-1 flex flex-col items-center justify-center my-4 print:my-8 bg-[#112920]">
                       <span className="font-serif text-xs italic text-white print:text-xs print:mb-4 text-center">Scan below to view our menu <br /> and place your order.</span>
                       <div className="rounded-xl bg-white p-2 shadow-sm print:p-2 border-2 border-luxury-gold/50 print:border-none">
                         {qrUrl ? (<img src={qrUrl} alt="Golden Hotel Menu QR Code" className="h-44 w-44 object-contain print:h-40 print:w-40" />) : (<div className="h-44 w-44 flex items-center justify-center text-xs text-gray-400 print:h-64 print:w-64">Click Generate...</div>)}

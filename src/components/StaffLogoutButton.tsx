@@ -24,7 +24,7 @@ export default function StaffLogoutButton() {
     <button
       onClick={handleLogout}
       disabled={loading}
-      className="flex items-center gap-1.5 rounded border border-luxury-gold/20 bg-luxury-charcoal/50 px-3 py-1.5 text-[10px] font-semibold tracking-wider text-gray-400 uppercase transition-all duration-300 hover:border-rose-500/40 hover:text-rose-400 hover:bg-rose-500/5 disabled:opacity-50"
+      className="flex items-center gap-1.5 rounded border border-luxury-gold/20 bg-luxury-green-secondary/50 px-3 py-1.5 text-[10px] font-semibold tracking-wider text-gray-400 uppercase transition-all duration-300 hover:border-rose-500/40 hover:text-rose-400 hover:bg-rose-500/5 disabled:opacity-50"
       title="Logout"
     >
       {loading ? (
