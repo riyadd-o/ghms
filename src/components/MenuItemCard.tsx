@@ -41,9 +41,9 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
             </span>
           </div>
         )}
-        {item.image ? (
+        {item.image_url || item.image ? (
           <img
-            src={item.image}
+            src={item.image_url || item.image}
             alt={item.name}
             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
             loading="lazy"

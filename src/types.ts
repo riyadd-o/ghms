@@ -8,6 +8,7 @@ export interface MenuItem {
   category: string; // category name (from JOIN)
   category_id: number | null;
   image: string; // image_base64 or URL
+  image_url?: string;
   available: boolean;
   sort_order?: number;
 }

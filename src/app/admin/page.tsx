@@ -35,7 +35,8 @@ export default function AdminPanel() {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState<string>("Starters");
-  const [image, setImage] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
   const [available, setAvailable] = useState(true);
 
   // Categories UI
@@ -188,7 +189,7 @@ export default function AdminPanel() {
     setDescription("");
     setPrice("");
     setCategory(categories.length > 0 ? categories[0].name : "Starters");
-    setImage("");
+    setImageUrl("");
     setAvailable(true);
     setIsModalOpen(true);
   };
@@ -199,16 +200,32 @@ export default function AdminPanel() {
     setDescription(item.description);
     setPrice(String(item.price));
     setCategory(item.category);
-    setImage(item.image);
+    setImageUrl(item.image_url || item.image || "");
     setAvailable(item.available);
     setIsModalOpen(true);
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setIsUploading(true);
       const reader = new FileReader();
-      reader.onloadend = () => setImage(reader.result as string);
+      reader.onloadend = async () => {
+        try {
+          const res = await fetch('/api/upload', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ image: reader.result })
+          });
+          if (!res.ok) throw new Error('Upload failed');
+          const data = await res.json();
+          setImageUrl(data.url);
+        } catch (err) {
+          addToast({ id: Date.now(), type: "error", message: "Failed to upload image" });
+        } finally {
+          setIsUploading(false);
+        }
+      };
       reader.readAsDataURL(file);
     }
   };
@@ -229,11 +246,11 @@ export default function AdminPanel() {
 
     try {
       if (editingItem) {
-        await updateMenuItem(editingItem.id, { name, description, price: priceNum, category, category_id, image, available });
+        await updateMenuItem(editingItem.id, { name, description, price: priceNum, category, category_id, image_url: imageUrl, available });
         setIsModalOpen(false);
         addToast({ id: Date.now(), type: "success", message: "Item updated successfully" });
       } else {
-        await createMenuItem({ name, description, price: priceNum, category, category_id, image, available });
+        await createMenuItem({ name, description, price: priceNum, category, category_id, image_url: imageUrl, available });
         setIsModalOpen(false);
         addToast({ id: Date.now(), type: "success", message: "Menu item added" });
       }
@@ -413,14 +430,16 @@ export default function AdminPanel() {
               <div>
                 <label className="text-[10px] font-bold uppercase tracking-wider text-gray-500 block mb-1.5">Image</label>
                 <div className="flex items-center gap-4">
-                  {image && (
-                    <img src={image} alt="Preview" className="h-12 w-12 rounded object-cover border border-luxury-gold/15" />
+                  {imageUrl && (
+                    <img src={imageUrl} alt="Preview" className="h-12 w-12 rounded object-cover border border-luxury-gold/15" />
                   )}
+                  {isUploading && <span className="text-xs text-luxury-gold">Uploading image...</span>}
                   <input
                     type="file"
                     accept="image/*"
                     onChange={handleImageUpload}
-                    className="text-xs text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:border-luxury-gold/20 file:bg-luxury-green-secondary/50 file:text-luxury-gold file:text-xs file:font-semibold file:uppercase file:tracking-wider hover:file:bg-luxury-green-secondary/80 cursor-pointer"
+                    disabled={isUploading}
+                    className="text-xs text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:border-luxury-gold/20 file:bg-luxury-green-secondary/50 file:text-luxury-gold file:text-xs file:font-semibold file:uppercase file:tracking-wider hover:file:bg-luxury-green-secondary/80 cursor-pointer disabled:opacity-50"
                   />
                 </div>
               </div>
@@ -600,8 +619,8 @@ export default function AdminPanel() {
                         </td>
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-4">
-                            {item.image ? (
-                              <img src={item.image} alt={item.name} className="h-10 w-10 rounded object-cover border border-luxury-gold/10" />
+                            {item.image_url || item.image ? (
+                              <img src={item.image_url || item.image} alt={item.name} className="h-10 w-10 rounded object-cover border border-luxury-gold/10" />
                             ) : (
                               <div className="h-10 w-10 rounded bg-luxury-green/60 border border-luxury-gold/10 flex items-center justify-center">
                                 <span className="font-serif text-gray-500 uppercase">{item.name.charAt(0)}</span>

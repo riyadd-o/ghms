@@ -15,7 +15,7 @@ export async function PUT(
       return NextResponse.json({ error: "Invalid item ID." }, { status: 400 });
     }
 
-    const { name, description, price, category_id, image, available } = await req.json();
+    const { name, description, price, category_id, image_url, available } = await req.json();
 
     const rows = await sql`
       UPDATE menu_items 
@@ -23,7 +23,7 @@ export async function PUT(
           description = ${description || ""},
           price = ${price},
           category_id = ${category_id || null},
-          image_base64 = ${image || ""},
+          image_url = ${image_url || ""},
           available = ${available !== false}
       WHERE id = ${itemId}
       RETURNING id

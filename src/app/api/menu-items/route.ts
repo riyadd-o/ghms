@@ -14,6 +14,7 @@ export async function GET() {
         mi.category_id,
         COALESCE(c.name, 'Uncategorized') AS category,
         mi.image_base64 AS image,
+        mi.image_url,
         mi.available,
         mi.created_at
       FROM menu_items mi
@@ -30,15 +31,15 @@ export async function GET() {
 // POST /api/menu-items — create a new menu item
 export async function POST(req: NextRequest) {
   try {
-    const { name, description, price, category_id, image, available } = await req.json();
+    const { name, description, price, category_id, image_url, available } = await req.json();
 
     if (!name || price == null) {
       return NextResponse.json({ error: "Name and price are required." }, { status: 400 });
     }
 
     const rows = await sql`
-      INSERT INTO menu_items (name, description, price, category_id, image_base64, available)
-      VALUES (${name}, ${description || ""}, ${price}, ${category_id || null}, ${image || ""}, ${available !== false})
+      INSERT INTO menu_items (name, description, price, category_id, image_url, available)
+      VALUES (${name}, ${description || ""}, ${price}, ${category_id || null}, ${image_url || ""}, ${available !== false})
       RETURNING id
     `;
 
