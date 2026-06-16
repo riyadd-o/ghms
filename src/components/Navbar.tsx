@@ -47,9 +47,8 @@ export default function Navbar() {
                   backgroundClip: 'text',
                 }}
               >
-                Golden
-              </span>{" "}
-              <span className="text-[#F5F1E8]">Hotel</span>
+                Golden Hotel
+              </span>
             </span>
             <span className="text-[9px] font-sans tracking-[0.25em] text-luxury-gold/80 uppercase mt-0.5">
               Restaurant &amp; Room Service
