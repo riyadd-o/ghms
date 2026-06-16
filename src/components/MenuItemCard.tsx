@@ -55,7 +55,7 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
             </span>
           </div>
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-luxury-green via-transparent to-transparent opacity-60" />
+        <div className="absolute inset-0 bg-gradient-to-t from-luxury-green via-transparent to-transparent opacity-60 pointer-events-none" />
       </div>
 
       {/* Details Container */}
