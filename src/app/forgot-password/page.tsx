@@ -18,10 +18,12 @@ function ForgotPasswordContent() {
   const removeToast = (id: number) => setToasts((prev) => prev.filter((t) => t.id !== id));
 
   const [email, setEmail] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleSendResetLink = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setErrorMsg("");
 
     try {
       const res = await fetch("/api/auth/forgot-password", {
@@ -34,10 +36,10 @@ function ForgotPasswordContent() {
         setSuccess(true);
       } else {
         const data = await res.json();
-        addToast({ id: Date.now(), type: "error", message: data.error || "No account found with this email. Please try again." });
+        setErrorMsg(data.error || "No account found with this email. Please try again.");
       }
     } catch {
-      addToast({ id: Date.now(), type: "error", message: "Network error. Please try again." });
+      setErrorMsg("Network error. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -59,22 +61,18 @@ function ForgotPasswordContent() {
           Resetting password for <strong className="text-luxury-gold uppercase">{role}</strong>
         </p>
 
-        {success ? (
-          <div className="bg-emerald-500/10 border border-emerald-500/20 rounded p-4 mb-6">
-            <p className="text-sm text-emerald-400">A password reset link has been sent to the admin email.</p>
-          </div>
-        ) : (
           <form onSubmit={handleSendResetLink} className="space-y-6 text-left">
             <div>
               <label className="text-[10px] font-bold uppercase tracking-wider text-gray-500 block mb-2">Admin Email</label>
               <input
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => { setEmail(e.target.value); setErrorMsg(""); setSuccess(false); }}
                 placeholder="Insert email."
                 className="w-full rounded border border-luxury-gold/20 bg-luxury-green/50 py-3 px-4 text-sm text-white outline-none focus:border-luxury-gold transition-colors"
                 required
               />
+              {errorMsg && <p className="text-red-500 text-sm mt-1">{errorMsg}</p>}
             </div>
 
             <button
@@ -84,8 +82,10 @@ function ForgotPasswordContent() {
             >
               {loading ? <div className="h-4 w-4 animate-spin rounded-full border-t-2 border-luxury-green" /> : "Send Reset Link"}
             </button>
+            {success && (
+              <p className="text-sm text-emerald-400 mt-2 text-center">A password reset link has been sent to the admin email.</p>
+            )}
           </form>
-        )}
 
         <div className="mt-8">
           <Link href="/staff-login" className="inline-flex items-center gap-2 text-[11px] text-gray-400 hover:text-luxury-gold transition-colors uppercase tracking-wider">

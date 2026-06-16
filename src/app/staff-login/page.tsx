@@ -37,11 +37,8 @@ function StaffLoginContent() {
       });
 
       if (res.ok) {
-        addToast({ id: Date.now(), type: "success", message: "Welcome back! Redirecting..." });
-        setTimeout(() => {
-          const defaultPath = role === "admin" ? "/admin" : "/kitchen";
-          window.location.href = redirectPath || defaultPath;
-        }, 1500);
+        const defaultPath = role === "admin" ? "/admin" : "/kitchen";
+        window.location.href = redirectPath || defaultPath;
       } else {
         setError("Invalid password. Please try again.");
       }
