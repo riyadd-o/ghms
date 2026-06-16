@@ -12,8 +12,21 @@ export async function POST(request: NextRequest) {
     const result = await cloudinary.uploader.upload(image, {
       folder: 'golden-hotel/menu-items',
       transformation: [
-        { width: 800, height: 600, crop: 'fill', quality: 'auto', fetch_format: 'auto' }
-      ]
+        { 
+          width: 400,        // Reduce width to 400px (enough for menu cards)
+          height: 300,       // Reduce height to 300px
+          crop: 'fill',      // Crop to fill the dimensions
+          gravity: 'auto',   // Smart crop focusing on the main subject
+          quality: 'auto:low', // Auto compress to lowest acceptable quality
+          fetch_format: 'auto', // Auto convert to WebP for browsers that support it
+          dpr: 'auto'        // Auto handle device pixel ratio
+        }
+      ],
+      eager: [
+        // Also generate a tiny thumbnail for Today's Special banner
+        { width: 60, height: 60, crop: 'fill', quality: 'auto:low', fetch_format: 'auto' }
+      ],
+      eager_async: true
     });
 
     return NextResponse.json({ 

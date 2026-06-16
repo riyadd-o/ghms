@@ -15,7 +15,16 @@ export async function GET() {
       if (item.image_base64) {
         const result = await cloudinary.uploader.upload(item.image_base64, {
           folder: 'golden-hotel/menu-items',
-          transformation: [{ width: 800, height: 600, crop: 'fill', quality: 'auto' }]
+          transformation: [
+            {
+              width: 400,
+              height: 300,
+              crop: 'fill',
+              gravity: 'auto',
+              quality: 'auto:low',
+              fetch_format: 'auto'
+            }
+          ]
         });
         await sql`UPDATE menu_items SET image_url = ${result.secure_url} WHERE id = ${item.id}`;
         results.push({ id: item.id, url: result.secure_url });

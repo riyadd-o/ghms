@@ -39,7 +39,16 @@ export default function Navbar() {
           />
           <div className="flex flex-col justify-center">
             <span className="font-rampart text-2xl tracking-[0.1em] transition-colors duration-300">
-              <span className="text-luxury-gold">Golden</span>{" "}
+              <span
+                style={{
+                  background: 'linear-gradient(to right, #FFFFFF, #D4AF37)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
+              >
+                Golden
+              </span>{" "}
               <span className="text-[#F5F1E8]">Hotel</span>
             </span>
             <span className="text-[9px] font-sans tracking-[0.25em] text-luxury-gold/80 uppercase mt-0.5">
