@@ -51,7 +51,7 @@ export default function Navbar() {
               </span>
             </span>
             <span className="text-[9px] font-sans tracking-[0.25em] text-luxury-gold/80 uppercase mt-0.5">
-              Restaurant &amp; Room Service
+              EXQUISITE CUISINE,amp; SEAMLESS SERVICE
             </span>
           </div>
         </Link>
