@@ -38,7 +38,7 @@ export default function Navbar() {
             priority
           />
           <div className="flex flex-col justify-center">
-            <span className="text-2xl tracking-[0.1em] transition-colors duration-300" style={{ fontFamily: "'Rampart One', cursive" }}>
+            <span className="font-rampart text-2xl tracking-[0.1em] transition-colors duration-300">
               <span className="text-luxury-gold">Golden</span>{" "}
               <span className="text-[#F5F1E8]">Hotel</span>
             </span>
