@@ -17,7 +17,7 @@ export default function Navbar() {
     setMounted(true);
   }, []);
 
-  const totalItems = mounted ? cart.reduce((sum, item) => sum + item.quantity, 0) : 0;
+  const totalItems = mounted ? cart.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0) : 0;
 
   // Hide navbar entirely on staff pages (kitchen, admin, qr, staff-login)
   const staffPages = ["/kitchen", "/admin", "/qr", "/staff-login"];
@@ -61,13 +61,17 @@ export default function Navbar() {
           <Link
             href="/cart"
             prefetch={true}
-            className="relative flex h-11 w-11 items-center justify-center rounded-full border border-luxury-gold/20 bg-luxury-green-secondary/80 text-gray-300 transition-all duration-300 hover:border-luxury-gold hover:text-luxury-gold hover:shadow-[0_0_8px_rgba(201,168,76,0.2)]"
+            className="relative flex h-11 w-11 cursor-pointer items-center justify-center rounded-full border border-luxury-gold/20 bg-luxury-green-secondary/80 text-gray-300 transition-all duration-300 hover:border-luxury-gold hover:text-luxury-gold hover:shadow-[0_0_8px_rgba(201,168,76,0.2)]"
             aria-label="Shopping Cart"
+            id="navbar-cart-button"
           >
-            <ShoppingCart className="h-5 w-5" />
+            <ShoppingCart className="h-5 w-5 pointer-events-none" />
             {totalItems > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-luxury-gold text-[10px] font-bold text-luxury-green animate-pulse">
-                {totalItems}
+              <span 
+                id="navbar-cart-badge"
+                className="absolute -top-1.5 -right-1.5 flex min-w-5 h-5 px-1 items-center justify-center rounded-full bg-luxury-gold text-[10px] font-bold text-luxury-green pointer-events-none select-none shadow-sm"
+              >
+                {totalItems > 99 ? '99+' : totalItems}
               </span>
             )}
           </Link>

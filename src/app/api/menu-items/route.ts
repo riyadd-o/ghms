@@ -13,15 +13,22 @@ export async function GET() {
         mi.price,
         mi.category_id,
         COALESCE(c.name, 'Uncategorized') AS category,
-        mi.image_base64 AS image,
-        mi.image_url,
+        COALESCE(NULLIF(mi.image_url, ''), mi.image_base64) AS image_url,
+        CASE 
+          WHEN mi.image_url IS NOT NULL AND mi.image_url != '' THEN mi.image_url 
+          ELSE mi.image_base64 
+        END AS image,
         mi.available,
         mi.created_at
       FROM menu_items mi
       LEFT JOIN categories c ON mi.category_id = c.id
       ORDER BY mi.sort_order ASC, mi.created_at DESC
     `;
-    return NextResponse.json(rows);
+    return NextResponse.json(rows, {
+      headers: {
+        "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300",
+      },
+    });
   } catch (error) {
     console.error("GET menu-items error:", error);
     return NextResponse.json({ error: "Failed to fetch menu items." }, { status: 500 });

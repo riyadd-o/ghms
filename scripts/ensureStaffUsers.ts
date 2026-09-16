@@ -1,6 +1,6 @@
 // Script to ensure staff users have bcrypt‑hashed passwords
 import bcrypt from "bcryptjs";
-import sql from "../src/lib/db.ts"; // explicit extension for ts-node
+import sql from "../src/lib/db";
 
 // Define the users and their plain‑text passwords
 const users = [

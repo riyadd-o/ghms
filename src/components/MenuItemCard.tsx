@@ -4,15 +4,18 @@ import React, { useState } from "react";
 import { MenuItem } from "@/types";
 import { useStore } from "@/store/useStore";
 import { Plus, Minus, ShoppingBag, Check } from "lucide-react";
+import { getOptimizedImageUrl } from "@/lib/image";
 
 interface MenuItemCardProps {
   item: MenuItem;
+  priority?: boolean;
 }
 
-export default function MenuItemCard({ item }: MenuItemCardProps) {
+export default function MenuItemCard({ item, priority = false }: MenuItemCardProps) {
   const addToCart = useStore((state) => state.addToCart);
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const increment = () => setQuantity((q) => q + 1);
   const decrement = () => setQuantity((q) => Math.max(1, q - 1));
@@ -29,10 +32,13 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
     setTimeout(() => setAdded(false), 2000);
   };
 
+  const rawImage = item.image_url || item.image;
+  const optimizedImage = getOptimizedImageUrl(rawImage);
+
   return (
     <article className="group relative flex flex-col overflow-hidden rounded-lg border border-luxury-gold/10 bg-luxury-green-secondary/40 transition-all duration-500 hover:-translate-y-1 hover:border-luxury-gold/30 hover:shadow-[0_8px_30px_rgb(201,168,76,0.05)]">
       {/* Food Image Container */}
-      <div className="relative h-36 md:h-56 w-full overflow-hidden">
+      <div className="relative h-36 md:h-56 w-full overflow-hidden bg-luxury-green-secondary/80">
         {/* Availability overlay */}
         {!item.available && (
           <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/80 backdrop-blur-sm">
@@ -41,12 +47,23 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
             </span>
           </div>
         )}
-        {item.image_url || item.image ? (
+
+        {/* Skeleton shimmer while image is loading */}
+        {optimizedImage && !imageLoaded && (
+          <div className="absolute inset-0 animate-pulse bg-luxury-green/60" />
+        )}
+
+        {optimizedImage ? (
           <img
-            src={item.image_url || item.image}
+            src={optimizedImage}
             alt={item.name}
-            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-            loading="lazy"
+            className={`h-full w-full object-cover transition-all duration-500 group-hover:scale-105 ${
+              imageLoaded ? "opacity-100" : "opacity-0"
+            }`}
+            loading={priority ? "eager" : "lazy"}
+            // @ts-expect-error fetchpriority attribute
+            fetchpriority={priority ? "high" : "auto"}
+            onLoad={() => setImageLoaded(true)}
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-luxury-green/80 transition-transform duration-700 group-hover:scale-105">

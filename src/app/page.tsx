@@ -8,11 +8,16 @@ import CartStickyButton from "@/components/CartStickyButton";
 import { Search } from "lucide-react";
 import { useStore } from "@/store/useStore";
 import Toast, { ToastMessage } from "@/components/Toast";
+import { getOptimizedImageUrl } from "@/lib/image";
+
+// Client-side cache to make navigating back from /cart instantaneous
+let memoryMenuCache: MenuItem[] | null = null;
+let memoryCategoryCache: string[] | null = null;
 
 export default function Home() {
-  const [menu, setMenu] = useState<MenuItem[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [menu, setMenu] = useState<MenuItem[]>(() => memoryMenuCache || []);
+  const [categories, setCategories] = useState<string[]>(() => memoryCategoryCache || []);
+  const [loading, setLoading] = useState(() => !memoryMenuCache);
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [mounted, setMounted] = useState(false);
@@ -20,7 +25,7 @@ export default function Home() {
   const searchInputRef = useRef<HTMLInputElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
 
-  const addToCart = useStore((state) => state.addToCart);
+  const { addToCart } = useStore();
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
 
   const addToast = (msg: ToastMessage) => setToasts((prev) => [...prev, msg]);
@@ -31,28 +36,48 @@ export default function Home() {
     addToast({ id: Date.now(), type: "success", message: `${item.name} added to cart!` });
   };
 
+  const fetchData = useCallback(async () => {
+    try {
+      const [menuRes, catRes] = await Promise.all([
+        fetch("/api/menu-items", { cache: "default" }),
+        fetch("/api/categories", { cache: "default" }),
+      ]);
+      if (menuRes.ok) {
+        const menuData = await menuRes.json();
+        if (Array.isArray(menuData)) {
+          memoryMenuCache = menuData;
+          setMenu(menuData);
+        }
+      }
+      if (catRes.ok) {
+        const catData = await catRes.json();
+        if (Array.isArray(catData)) {
+          const catNames = catData.map((c: { name: string }) => c.name);
+          memoryCategoryCache = catNames;
+          setCategories(catNames);
+        }
+      }
+    } catch (err) {
+      console.error("Failed to fetch menu data:", err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
     setMounted(true);
-
-    const fetchData = async () => {
-      try {
-        const [menuRes, catRes] = await Promise.all([
-          fetch("/api/menu-items", { cache: "no-store" }),
-          fetch("/api/categories", { cache: "no-store" }),
-        ]);
-        if (menuRes.ok) setMenu(await menuRes.json());
-        if (catRes.ok) {
-          const catData = await catRes.json();
-          setCategories(catData.map((c: { name: string }) => c.name));
-        }
-      } catch (err) {
-        console.error("Failed to fetch menu data:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchData();
-  }, []);
+  }, [fetchData]);
+
+  // Auto-retry if initial fetch happened during dev server compilation
+  useEffect(() => {
+    if (mounted && !loading && menu.length === 0) {
+      const timer = setTimeout(() => {
+        fetchData();
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [mounted, loading, menu.length, fetchData]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -123,7 +148,9 @@ export default function Home() {
         <h1 className="font-serif text-3xl sm:text-4xl font-light tracking-wide text-white mb-2 relative z-10">
           Discover <span className="text-gold-gradient font-normal italic">Our Menu</span>
         </h1>
-        <p className="text-xs sm:text-sm font-light tracking-widest text-gray-400 uppercase relative z-10">Order from your table or hotel room</p>
+        <p className="text-xs sm:text-sm font-light tracking-widest text-gray-400 uppercase relative z-10">
+          Order from your table or hotel room
+        </p>
         <div className="relative mt-4 w-full max-w-md z-10">
           <input ref={searchInputRef} type="text" placeholder="What would you like today?" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} onFocus={handleSearchFocus} className="w-full rounded-full border border-luxury-gold/10 bg-luxury-green/60 py-3 pl-12 pr-6 text-sm text-white placeholder-gray-500 outline-none transition-all duration-300 focus:border-luxury-gold/45 focus:ring-1 focus:ring-luxury-gold/20" />
           <Search className="absolute left-4 top-3.5 h-4.5 w-4.5 text-gray-500" />
@@ -136,13 +163,18 @@ export default function Home() {
               <div className="absolute left-0 top-0 bottom-0 w-[1px] bg-luxury-gold" />
 
               <div className="flex flex-row items-center gap-3 pl-2 flex-1 min-w-0">
-                {specialItem.image ? (
-                  <img src={specialItem.image} alt={specialItem.name} className="w-12 h-12 sm:w-[60px] sm:h-[60px] rounded object-cover border border-luxury-gold/20 shrink-0" />
+                {specialItem.image_url || specialItem.image ? (
+                  <img 
+                    src={getOptimizedImageUrl(specialItem.image_url || specialItem.image, 160)} 
+                    alt={specialItem.name} 
+                    className="w-12 h-12 sm:w-[60px] sm:h-[60px] rounded object-cover border border-luxury-gold/20 shrink-0" 
+                    loading="eager"
+                  />
                 ) : (
                   <div className="w-12 h-12 sm:w-[60px] sm:h-[60px] rounded bg-luxury-green flex items-center justify-center border border-luxury-gold/20 shrink-0"><span className="text-luxury-gold text-sm">🍽️</span></div>
                 )}
                 <div className="flex flex-col justify-center min-w-0 text-left">
-                  <div className="text-luxury-gold text-[8px] sm:text-[10px] font-bold tracking-widest uppercase mb-0.5">⚡ Today's Special</div>
+                  <div className="text-luxury-gold text-[8px] sm:text-[10px] font-bold tracking-widest uppercase mb-0.5">⚡ Today&apos;s Special</div>
                   <div className="text-white font-bold text-xs sm:text-sm truncate">{specialItem.name}</div>
                   <div className="text-luxury-gold font-serif text-[10px] sm:text-xs">ETB {Number(specialItem.price).toFixed(2)}</div>
                 </div>
@@ -159,7 +191,22 @@ export default function Home() {
       <main ref={resultsRef} className="mx-auto max-w-7xl px-6 py-12 sm:px-8" style={{ paddingBottom: keyboardPadding > 0 ? `${keyboardPadding}px` : undefined }}>
         {filteredMenu.length > 0 ? (
           <div className="grid grid-cols-2 gap-3 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {filteredMenu.map((item) => (<MenuItemCard key={item.id} item={item} />))}
+            {filteredMenu.map((item, index) => (
+              <MenuItemCard key={item.id} item={item} priority={index < 4} />
+            ))}
+          </div>
+        ) : menu.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <p className="font-serif text-lg text-gray-400 italic mb-4">Loading dishes from kitchen...</p>
+            <button
+              onClick={() => {
+                setLoading(true);
+                fetchData();
+              }}
+              className="rounded bg-luxury-gold px-6 py-2.5 text-xs font-bold uppercase tracking-widest text-luxury-green hover:bg-luxury-gold-hover transition-all shadow-md"
+            >
+              Refresh Menu
+            </button>
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center py-20 text-center">
