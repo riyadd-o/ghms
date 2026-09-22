@@ -83,19 +83,19 @@ export async function GET() {
         })),
         payment: payment
           ? {
-              id: payment.id,
-              order_id: payment.order_id,
-              amount: Number(payment.amount),
-              currency: payment.currency,
-              method: payment.method,
-              status: payment.status,
-              provider: payment.provider,
-              provider_payment_id: payment.provider_payment_id,
-              transaction_id: payment.transaction_id,
-              checkout_url: payment.checkout_url,
-              paid_at: payment.paid_at,
-              paid_by_email: payment.paid_by_email,
-            }
+            id: payment.id,
+            order_id: payment.order_id,
+            amount: Number(payment.amount),
+            currency: payment.currency,
+            method: payment.method,
+            status: payment.status,
+            provider: payment.provider,
+            provider_payment_id: payment.provider_payment_id,
+            transaction_id: payment.transaction_id,
+            checkout_url: payment.checkout_url,
+            paid_at: payment.paid_at,
+            paid_by_email: payment.paid_by_email,
+          }
           : null,
         payment_status: payment?.status || "UNPAID",
         payment_method: payment?.method || "CASH",
@@ -142,6 +142,7 @@ export async function POST(req: NextRequest) {
 
     // Validation according to order_type
     let finalLocation = "";
+
     if (validatedOrderType === "HOTEL") {
       if (!delivery_location || typeof delivery_location !== "string" || !delivery_location.trim()) {
         return NextResponse.json(
@@ -241,8 +242,14 @@ export async function POST(req: NextRequest) {
       if (selectedMethod === "DIGITAL") {
         // Delete the unconfirmed order so user isn't stuck with an unintended cash order
         await sql`DELETE FROM orders WHERE id = ${order.id}`;
+        const errMsg = paymentErr instanceof Error ? paymentErr.message : "Payment initialization failed.";
+        const isEnvError = errMsg.includes("CHAPA_SECRET_KEY");
         return NextResponse.json(
-          { error: "Digital payment initialization failed. Please try again or choose Cash on delivery." },
+          {
+            error: isEnvError
+              ? "Payment Gateway Error: CHAPA_SECRET_KEY is missing in your Vercel Environment Variables. Please add it to your Vercel project settings."
+              : `Digital payment initialization failed: ${errMsg}`
+          },
           { status: 502 }
         );
       }

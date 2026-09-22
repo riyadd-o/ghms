@@ -2,29 +2,25 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import { MenuItem, Category, Order, Payment } from "@/types";
-import { 
-  Plus, 
-  Edit, 
-  Trash2, 
-  Shield, 
-  ShoppingBag, 
-  History, 
-  ToggleLeft, 
-  ToggleRight, 
-  X, 
-  Filter, 
-  Calendar, 
-  QrCode as QrIcon, 
-  Download, 
-  Printer, 
-  DollarSign, 
-  TrendingUp, 
-  Package, 
-  Clock, 
+import {
+  Plus,
+  Edit,
+  Trash2,
+  Shield,
+  ShoppingBag,
+  History,
+  ToggleLeft,
+  ToggleRight,
+  X,
+  Filter,
+  Calendar,
+  QrCode as QrIcon,
+  Download,
+  Printer,
+  DollarSign,
   GripVertical,
   CreditCard,
   Banknote,
-  CheckCircle,
   AlertCircle,
   Eye,
   Check,
@@ -34,10 +30,7 @@ import {
   ChefHat,
   Hotel,
   Bike,
-  Truck,
-  Phone,
-  MapPin,
-  User
+  Truck
 } from "lucide-react";
 import QRCode from "qrcode";
 
@@ -572,15 +565,14 @@ export default function AdminPanel() {
               </div>
               <div className="flex justify-between border-b border-[#1b3a2c] pb-2">
                 <span className="text-gray-400">Payment Status</span>
-                <span className={`font-bold px-2 py-0.5 rounded text-[10px] uppercase ${
-                  selectedPayment.status === "PAID"
+                <span className={`font-bold px-2 py-0.5 rounded text-[10px] uppercase ${selectedPayment.status === "PAID"
                     ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
                     : selectedPayment.status === "UNPAID"
-                    ? "bg-amber-500/20 text-amber-400 border border-amber-500/30"
-                    : selectedPayment.status === "PENDING"
-                    ? "bg-sky-500/20 text-sky-400 border border-sky-500/30"
-                    : "bg-rose-500/20 text-rose-400 border border-rose-500/30"
-                }`}>
+                      ? "bg-amber-500/20 text-amber-400 border border-amber-500/30"
+                      : selectedPayment.status === "PENDING"
+                        ? "bg-sky-500/20 text-sky-400 border border-sky-500/30"
+                        : "bg-rose-500/20 text-rose-400 border border-rose-500/30"
+                  }`}>
                   {selectedPayment.status}
                 </span>
               </div>
@@ -656,11 +648,10 @@ export default function AdminPanel() {
                   <h3 className="font-serif text-lg font-bold text-white">
                     Order #{selectedOrder.id} Details
                   </h3>
-                  <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider ${
-                    selectedOrder.order_type === "DELIVERY"
+                  <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider ${selectedOrder.order_type === "DELIVERY"
                       ? "bg-sky-500/20 text-sky-300 border border-sky-500/30"
                       : "bg-luxury-gold/15 text-luxury-gold border border-luxury-gold/30"
-                  }`}>
+                    }`}>
                     {selectedOrder.order_type === "DELIVERY" ? "Home Delivery" : "At the Hotel"}
                   </span>
                 </div>
@@ -775,9 +766,8 @@ export default function AdminPanel() {
                 </div>
                 <div className="rounded-lg bg-[#08170f] p-3 border border-[#183626]">
                   <span className="text-[10px] font-bold uppercase text-gray-400 block mb-1">Payment ({selectedOrder.payment_method || "CASH"})</span>
-                  <span className={`font-bold uppercase text-xs ${
-                    selectedOrder.payment_status === "PAID" ? "text-emerald-400" : "text-amber-400"
-                  }`}>
+                  <span className={`font-bold uppercase text-xs ${selectedOrder.payment_status === "PAID" ? "text-emerald-400" : "text-amber-400"
+                    }`}>
                     {selectedOrder.payment_status || "UNPAID"}
                   </span>
                 </div>
@@ -1061,11 +1051,10 @@ export default function AdminPanel() {
               <button
                 key={key}
                 onClick={() => setActiveTab(key)}
-                className={`flex w-full items-center gap-3 rounded-lg px-3.5 py-2.5 text-xs font-semibold tracking-wide transition-all ${
-                  activeTab === key
+                className={`flex w-full items-center gap-3 rounded-lg px-3.5 py-2.5 text-xs font-semibold tracking-wide transition-all ${activeTab === key
                     ? "bg-luxury-gold text-luxury-green shadow font-bold"
                     : "text-gray-400 hover:bg-luxury-green-secondary/60 hover:text-white"
-                }`}
+                  }`}
               >
                 <Icon className="h-4 w-4" />
                 <span>{label}</span>
@@ -1086,9 +1075,8 @@ export default function AdminPanel() {
               <button
                 key={key}
                 onClick={() => setActiveTab(key)}
-                className={`flex-1 min-w-[70px] py-2 text-[10px] font-bold uppercase tracking-wider rounded-md text-center transition-all ${
-                  activeTab === key ? "bg-luxury-gold text-luxury-green font-extrabold" : "text-gray-400"
-                }`}
+                className={`flex-1 min-w-[70px] py-2 text-[10px] font-bold uppercase tracking-wider rounded-md text-center transition-all ${activeTab === key ? "bg-luxury-gold text-luxury-green font-extrabold" : "text-gray-400"
+                  }`}
               >
                 {label}
               </button>
@@ -1293,9 +1281,8 @@ export default function AdminPanel() {
                       <button
                         key={type}
                         onClick={() => setOrderTypeFilter(type)}
-                        className={`rounded px-3 py-1 text-[10px] font-bold tracking-wider uppercase transition-all flex items-center gap-1 ${
-                          orderTypeFilter === type ? "bg-luxury-gold text-luxury-green font-extrabold" : "text-gray-400 hover:text-white"
-                        }`}
+                        className={`rounded px-3 py-1 text-[10px] font-bold tracking-wider uppercase transition-all flex items-center gap-1 ${orderTypeFilter === type ? "bg-luxury-gold text-luxury-green font-extrabold" : "text-gray-400 hover:text-white"
+                          }`}
                       >
                         {type === "HOTEL" && <Hotel className="h-3 w-3" />}
                         {type === "DELIVERY" && <Bike className="h-3 w-3" />}
@@ -1314,9 +1301,8 @@ export default function AdminPanel() {
                       <button
                         key={status}
                         onClick={() => setStatusFilter(status)}
-                        className={`rounded px-3 py-1 text-[10px] font-bold tracking-wider uppercase transition-all ${
-                          statusFilter === status ? "bg-luxury-gold text-luxury-green font-extrabold" : "text-gray-400 hover:text-white"
-                        }`}
+                        className={`rounded px-3 py-1 text-[10px] font-bold tracking-wider uppercase transition-all ${statusFilter === status ? "bg-luxury-gold text-luxury-green font-extrabold" : "text-gray-400 hover:text-white"
+                          }`}
                       >
                         {status === "out_for_delivery" ? "Out for Delivery" : status}
                       </button>
@@ -1425,32 +1411,30 @@ export default function AdminPanel() {
 
                               {/* FOOD STATUS BADGE */}
                               <td className="px-3.5 py-3 whitespace-nowrap">
-                                <span className={`inline-block rounded-full border px-2.5 py-0.5 text-[9px] font-bold tracking-wider uppercase ${
-                                  orderStatusNormalized === "new"
+                                <span className={`inline-block rounded-full border px-2.5 py-0.5 text-[9px] font-bold tracking-wider uppercase ${orderStatusNormalized === "new"
                                     ? "bg-luxury-gold/10 text-luxury-gold border-luxury-gold/25"
                                     : orderStatusNormalized === "cooking"
-                                    ? "bg-amber-500/10 text-amber-400 border-amber-500/25"
-                                    : orderStatusNormalized === "ready"
-                                    ? "bg-sky-500/10 text-sky-400 border-sky-500/25 animate-pulse"
-                                    : orderStatusNormalized === "out_for_delivery"
-                                    ? "bg-purple-500/15 text-purple-300 border-purple-500/30"
-                                    : "bg-emerald-500/10 text-emerald-400 border-emerald-500/25"
-                                }`}>
+                                      ? "bg-amber-500/10 text-amber-400 border-amber-500/25"
+                                      : orderStatusNormalized === "ready"
+                                        ? "bg-sky-500/10 text-sky-400 border-sky-500/25 animate-pulse"
+                                        : orderStatusNormalized === "out_for_delivery"
+                                          ? "bg-purple-500/15 text-purple-300 border-purple-500/30"
+                                          : "bg-emerald-500/10 text-emerald-400 border-emerald-500/25"
+                                  }`}>
                                   {orderStatusNormalized === "out_for_delivery" ? "Out for Delivery" : orderStatusNormalized}
                                 </span>
                               </td>
 
                               {/* PAYMENT STATUS BADGE */}
                               <td className="px-3.5 py-3 whitespace-nowrap">
-                                <span className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[9px] font-bold tracking-wider uppercase ${
-                                  paymentStatus === "PAID"
+                                <span className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[9px] font-bold tracking-wider uppercase ${paymentStatus === "PAID"
                                     ? "bg-emerald-500/15 text-emerald-400 border-emerald-500/30"
                                     : paymentStatus === "UNPAID"
-                                    ? "bg-amber-500/15 text-amber-400 border-amber-500/30"
-                                    : paymentStatus === "PENDING"
-                                    ? "bg-sky-500/15 text-sky-400 border-sky-500/30"
-                                    : "bg-rose-500/15 text-rose-400 border-rose-500/30"
-                                }`}>
+                                      ? "bg-amber-500/15 text-amber-400 border-amber-500/30"
+                                      : paymentStatus === "PENDING"
+                                        ? "bg-sky-500/15 text-sky-400 border-sky-500/30"
+                                        : "bg-rose-500/15 text-rose-400 border-rose-500/30"
+                                  }`}>
                                   {paymentStatus === "PAID" && <Check className="h-3 w-3" />}
                                   {paymentStatus} ({order.payment_method || "CASH"})
                                 </span>
@@ -1561,11 +1545,10 @@ export default function AdminPanel() {
                       <button
                         key={st}
                         onClick={() => setPaymentStatusFilter(st)}
-                        className={`rounded px-2.5 py-1 text-[10px] font-bold uppercase transition-all ${
-                          paymentStatusFilter === st
+                        className={`rounded px-2.5 py-1 text-[10px] font-bold uppercase transition-all ${paymentStatusFilter === st
                             ? "bg-luxury-gold text-luxury-green font-extrabold"
                             : "text-gray-400 hover:text-white"
-                        }`}
+                          }`}
                       >
                         {st}
                       </button>
@@ -1579,11 +1562,10 @@ export default function AdminPanel() {
                       <button
                         key={m}
                         onClick={() => setPaymentMethodFilter(m)}
-                        className={`rounded px-2.5 py-1 text-[10px] font-bold uppercase transition-all ${
-                          paymentMethodFilter === m
+                        className={`rounded px-2.5 py-1 text-[10px] font-bold uppercase transition-all ${paymentMethodFilter === m
                             ? "bg-luxury-gold text-luxury-green font-extrabold"
                             : "text-gray-400 hover:text-white"
-                        }`}
+                          }`}
                       >
                         {m}
                       </button>
@@ -1642,15 +1624,14 @@ export default function AdminPanel() {
                               </span>
                             </td>
                             <td className="px-5 py-4">
-                              <span className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[9px] font-bold tracking-wider uppercase ${
-                                payment.status === "PAID"
+                              <span className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[9px] font-bold tracking-wider uppercase ${payment.status === "PAID"
                                   ? "bg-emerald-500/15 text-emerald-400 border-emerald-500/30"
                                   : payment.status === "UNPAID"
-                                  ? "bg-amber-500/15 text-amber-400 border-amber-500/30"
-                                  : payment.status === "PENDING"
-                                  ? "bg-sky-500/15 text-sky-400 border-sky-500/30"
-                                  : "bg-rose-500/15 text-rose-400 border-rose-500/30"
-                              }`}>
+                                    ? "bg-amber-500/15 text-amber-400 border-amber-500/30"
+                                    : payment.status === "PENDING"
+                                      ? "bg-sky-500/15 text-sky-400 border-sky-500/30"
+                                      : "bg-rose-500/15 text-rose-400 border-rose-500/30"
+                                }`}>
                                 {payment.status}
                               </span>
                             </td>

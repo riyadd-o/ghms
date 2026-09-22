@@ -90,7 +90,10 @@ export class PaymentService {
 
     // DIGITAL PAYMENT FLOW (Chapa)
     const provider = getDigitalPaymentProvider();
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+    const configuredBase = process.env.NEXT_PUBLIC_BASE_URL;
+    const baseUrl = (configuredBase && !configuredBase.includes("localhost"))
+      ? configuredBase
+      : (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : (configuredBase || "http://localhost:3000"));
     const returnUrl = options.returnUrl || `${baseUrl}/cart?order_id=${orderId}&payment=success`;
     const callbackUrl = options.callbackUrl || `${baseUrl}/api/payments/webhook`;
 

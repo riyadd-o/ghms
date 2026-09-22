@@ -41,7 +41,8 @@ body {
 }
 
 .gold-glow {
-  box-shadow: 0 0 15px rgba(212, 175, 55, 0.15); /* #D4AF37 */
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
+  /* #D4AF37 */
 }
 
 .gold-glow:hover {
@@ -57,6 +58,7 @@ body {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;

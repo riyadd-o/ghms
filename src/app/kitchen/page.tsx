@@ -2,15 +2,15 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import { Order } from "@/types";
-import { 
-  Clock, 
-  Play, 
-  Check, 
-  RotateCcw, 
-  AlertTriangle, 
-  Flame, 
-  UtensilsCrossed, 
-  CheckCircle2, 
+import {
+  Clock,
+  Play,
+  Check,
+  RotateCcw,
+  AlertTriangle,
+  Flame,
+  UtensilsCrossed,
+  CheckCircle2,
   ChefHat,
   Hotel,
   Bike,
@@ -418,11 +418,10 @@ export default function KitchenDashboard() {
           <div className="grid grid-cols-3 gap-1 rounded-xl bg-[#09170f] p-1.5 border border-[#203c2b]">
             <button
               onClick={() => setMobileTab("new")}
-              className={`flex items-center justify-center gap-2 rounded-lg py-2.5 text-xs font-bold uppercase tracking-wider transition-all ${
-                mobileTab === "new"
+              className={`flex items-center justify-center gap-2 rounded-lg py-2.5 text-xs font-bold uppercase tracking-wider transition-all ${mobileTab === "new"
                   ? "bg-luxury-gold text-luxury-green shadow-md"
                   : "text-gray-400 hover:text-white"
-              }`}
+                }`}
             >
               <span>New</span>
               <span className={`rounded-full px-1.5 py-0.2 text-[10px] ${mobileTab === "new" ? "bg-luxury-green text-luxury-gold" : "bg-luxury-gold/20 text-luxury-gold"}`}>
@@ -431,11 +430,10 @@ export default function KitchenDashboard() {
             </button>
             <button
               onClick={() => setMobileTab("cooking")}
-              className={`flex items-center justify-center gap-2 rounded-lg py-2.5 text-xs font-bold uppercase tracking-wider transition-all ${
-                mobileTab === "cooking"
+              className={`flex items-center justify-center gap-2 rounded-lg py-2.5 text-xs font-bold uppercase tracking-wider transition-all ${mobileTab === "cooking"
                   ? "bg-amber-500 text-black shadow-md"
                   : "text-gray-400 hover:text-white"
-              }`}
+                }`}
             >
               <span>Cooking</span>
               <span className={`rounded-full px-1.5 py-0.2 text-[10px] ${mobileTab === "cooking" ? "bg-black text-amber-400" : "bg-amber-500/20 text-amber-400"}`}>
@@ -444,11 +442,10 @@ export default function KitchenDashboard() {
             </button>
             <button
               onClick={() => setMobileTab("ready")}
-              className={`flex items-center justify-center gap-2 rounded-lg py-2.5 text-xs font-bold uppercase tracking-wider transition-all ${
-                mobileTab === "ready"
+              className={`flex items-center justify-center gap-2 rounded-lg py-2.5 text-xs font-bold uppercase tracking-wider transition-all ${mobileTab === "ready"
                   ? "bg-emerald-600 text-white shadow-md"
                   : "text-gray-400 hover:text-white"
-              }`}
+                }`}
             >
               <span>Ready</span>
               <span className={`rounded-full px-1.5 py-0.2 text-[10px] ${mobileTab === "ready" ? "bg-white text-emerald-700 font-bold" : "bg-emerald-500/20 text-emerald-400"}`}>

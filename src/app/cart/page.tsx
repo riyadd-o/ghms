@@ -6,16 +6,16 @@ import { useSearchParams } from "next/navigation";
 import { useStore } from "@/store/useStore";
 import { Order, PaymentMethod } from "@/types";
 import { APP_CONFIG } from "@/lib/config";
-import { 
-  Plus, 
-  Minus, 
-  Trash2, 
-  ArrowLeft, 
-  Clock, 
-  CheckCircle, 
-  Banknote, 
-  CreditCard, 
-  AlertCircle, 
+import {
+  Plus,
+  Minus,
+  Trash2,
+  ArrowLeft,
+  Clock,
+  CheckCircle,
+  Banknote,
+  CreditCard,
+  AlertCircle,
   RefreshCw,
   ChefHat,
   Hotel,
@@ -30,12 +30,12 @@ import confetti from "canvas-confetti";
 
 function CartPageContent() {
   const searchParams = useSearchParams();
-  const { 
-    cart, 
-    updateCartQuantity, 
-    removeFromCart, 
-    specialInstructions, 
-    setSpecialInstructions, 
+  const {
+    cart,
+    updateCartQuantity,
+    removeFromCart,
+    specialInstructions,
+    setSpecialInstructions,
     clearCart,
     orderType,
     setOrderType,
@@ -216,6 +216,7 @@ function CartPageContent() {
         total_amount: total,
         payment_method: paymentMethod,
         customer_name: orderType === "HOTEL" ? `${locationType} ${locationNumber} Guest` : deliveryInfo.name.trim(),
+        return_url: typeof window !== "undefined" ? `${window.location.origin}/cart?payment=success` : undefined,
         items: cart.map((c) => ({
           menu_item_id: c.item.id,
           name: c.item.name,
@@ -347,7 +348,7 @@ function CartPageContent() {
 
     const isDelivery = placedOrder.order_type === "DELIVERY";
 
-    const orderStages = isDelivery 
+    const orderStages = isDelivery
       ? (["new", "cooking", "ready", "out_for_delivery", "delivered"] as const)
       : (["new", "cooking", "ready", "delivered"] as const);
 
@@ -357,7 +358,7 @@ function CartPageContent() {
     return (
       <div className="flex flex-1 flex-col items-center justify-center bg-luxury-green px-6 py-16 text-center">
         <div className="absolute top-1/3 left-1/2 -z-10 h-72 w-72 -translate-x-1/2 rounded-full bg-luxury-gold/5 blur-[100px]" />
-        
+
         <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border border-luxury-gold bg-luxury-green-secondary/50 text-luxury-gold shadow-[0_0_20px_rgba(201,168,76,0.3)]">
           {isPaid ? (
             <CheckCircle className="h-10 w-10 text-emerald-400 animate-bounce" />
@@ -375,7 +376,7 @@ function CartPageContent() {
           {isPaid ? "Thank You for Your Payment" : "Order Received"}
         </h1>
         <p className="text-sm text-gray-400 mb-8 max-w-md">
-          {isDelivery 
+          {isDelivery
             ? "Our kitchen is preparing your dishes. They will be dispatched directly to your address."
             : "Our kitchen is preparing your dishes with the finest ingredients."}
         </p>
@@ -405,19 +406,19 @@ function CartPageContent() {
                     ? currentIndex === 4
                       ? "100%"
                       : currentIndex === 3
-                      ? "75%"
-                      : currentIndex === 2
-                      ? "50%"
-                      : currentIndex === 1
-                      ? "25%"
-                      : "0%"
+                        ? "75%"
+                        : currentIndex === 2
+                          ? "50%"
+                          : currentIndex === 1
+                            ? "25%"
+                            : "0%"
                     : currentIndex === 3
-                    ? "100%"
-                    : currentIndex === 2
-                    ? "66%"
-                    : currentIndex === 1
-                    ? "33%"
-                    : "0%",
+                      ? "100%"
+                      : currentIndex === 2
+                        ? "66%"
+                        : currentIndex === 1
+                          ? "33%"
+                          : "0%",
               }}
             />
             <div className="flex justify-between items-start">
@@ -428,11 +429,10 @@ function CartPageContent() {
                 return (
                   <div key={st} className="flex flex-col items-center gap-1.5">
                     <div
-                      className={`h-8 w-8 rounded-full flex items-center justify-center border-2 transition-all duration-500 bg-luxury-green ${
-                        isPast
+                      className={`h-8 w-8 rounded-full flex items-center justify-center border-2 transition-all duration-500 bg-luxury-green ${isPast
                           ? "border-luxury-gold text-luxury-gold"
                           : "border-gray-700 text-gray-600"
-                      } ${isActive ? "shadow-[0_0_15px_rgba(201,168,76,0.5)] scale-110 bg-luxury-green-secondary/80 font-bold" : ""}`}
+                        } ${isActive ? "shadow-[0_0_15px_rgba(201,168,76,0.5)] scale-110 bg-luxury-green-secondary/80 font-bold" : ""}`}
                     >
                       {isPast && !isActive ? (
                         <CheckCircle className="h-4 w-4" />
@@ -443,13 +443,12 @@ function CartPageContent() {
                       )}
                     </div>
                     <span
-                      className={`text-[8px] sm:text-[9px] uppercase font-bold tracking-wider ${
-                        isActive
+                      className={`text-[8px] sm:text-[9px] uppercase font-bold tracking-wider ${isActive
                           ? "text-luxury-gold font-extrabold"
                           : isPast
-                          ? "text-gray-300"
-                          : "text-gray-600"
-                      }`}
+                            ? "text-gray-300"
+                            : "text-gray-600"
+                        }`}
                     >
                       {displayLabel}
                     </span>
@@ -469,8 +468,8 @@ function CartPageContent() {
             )}
             {currentStatus === "ready" && (
               <p className="text-emerald-400 font-medium">
-                {isDelivery 
-                  ? "Food is Ready &mdash; Plated, securely packaged, and waiting for courier pickup." 
+                {isDelivery
+                  ? "Food is Ready &mdash; Plated, securely packaged, and waiting for courier pickup."
                   : `Food is Ready &mdash; Plated and waiting for staff to deliver to ${placedOrder.delivery_location}.`}
               </p>
             )}
@@ -804,11 +803,10 @@ function CartPageContent() {
                 <button
                   type="button"
                   onClick={() => setOrderType("HOTEL")}
-                  className={`flex items-center justify-center gap-2.5 rounded-lg py-3 px-4 text-xs font-bold tracking-wider uppercase transition-all ${
-                    orderType === "HOTEL"
+                  className={`flex items-center justify-center gap-2.5 rounded-lg py-3 px-4 text-xs font-bold tracking-wider uppercase transition-all ${orderType === "HOTEL"
                       ? "bg-luxury-gold text-luxury-green shadow-[0_0_15px_rgba(201,168,76,0.3)] ring-1 ring-luxury-gold"
                       : "border border-luxury-gold/20 bg-luxury-green/40 text-gray-400 hover:text-white hover:border-luxury-gold/40"
-                  }`}
+                    }`}
                 >
                   <Hotel className="h-4 w-4 shrink-0" />
                   <span>Pick up</span>
@@ -816,11 +814,10 @@ function CartPageContent() {
                 <button
                   type="button"
                   onClick={() => setOrderType("DELIVERY")}
-                  className={`flex items-center justify-center gap-2.5 rounded-lg py-3 px-4 text-xs font-bold tracking-wider uppercase transition-all ${
-                    orderType === "DELIVERY"
+                  className={`flex items-center justify-center gap-2.5 rounded-lg py-3 px-4 text-xs font-bold tracking-wider uppercase transition-all ${orderType === "DELIVERY"
                       ? "bg-luxury-gold text-luxury-green shadow-[0_0_15px_rgba(201,168,76,0.3)] ring-1 ring-luxury-gold"
                       : "border border-luxury-gold/20 bg-luxury-green/40 text-gray-400 hover:text-white hover:border-luxury-gold/40"
-                  }`}
+                    }`}
                 >
                   <Bike className="h-4 w-4 shrink-0" />
                   <span>Delivery</span>
@@ -839,22 +836,20 @@ function CartPageContent() {
                     <button
                       type="button"
                       onClick={() => setLocationType("Table")}
-                      className={`flex-1 rounded py-2 text-xs font-semibold tracking-widest uppercase transition-all ${
-                        locationType === "Table"
+                      className={`flex-1 rounded py-2 text-xs font-semibold tracking-widest uppercase transition-all ${locationType === "Table"
                           ? "bg-luxury-gold text-luxury-green shadow-sm"
                           : "text-gray-400 hover:text-white"
-                      }`}
+                        }`}
                     >
                       Table
                     </button>
                     <button
                       type="button"
                       onClick={() => setLocationType("Room")}
-                      className={`flex-1 rounded py-2 text-xs font-semibold tracking-widest uppercase transition-all ${
-                        locationType === "Room"
+                      className={`flex-1 rounded py-2 text-xs font-semibold tracking-widest uppercase transition-all ${locationType === "Room"
                           ? "bg-luxury-gold text-luxury-green shadow-sm"
                           : "text-gray-400 hover:text-white"
-                      }`}
+                        }`}
                     >
                       Room
                     </button>
@@ -960,14 +955,14 @@ function CartPageContent() {
                   </div>
 
                   {/* Delivery Address */}
-                  <div className="md:col-span-2">
+                  <div>
                     <label className="text-xs font-semibold tracking-wider text-luxury-gold uppercase block mb-1.5">
                       Delivery Address <span className="text-red-400">*</span>
                     </label>
                     <div className="relative">
                       <input
                         type="text"
-                        placeholder="e.g. Bole, Near Edna Mall, Behind Medhanialem"
+                        placeholder="e.g. Near Edna Mall, Behind Medhanialem"
                         value={deliveryInfo.address}
                         onChange={(e) => {
                           setDeliveryInfo({ address: e.target.value });
@@ -980,6 +975,23 @@ function CartPageContent() {
                     {deliveryErrors.address && (
                       <p className="text-xs text-red-400 mt-1">{deliveryErrors.address}</p>
                     )}
+                  </div>
+
+                  {/* Area / Sub-city */}
+                  <div>
+                    <label className="text-xs font-semibold tracking-wider text-luxury-gold uppercase block mb-1.5">
+                      Area / Sub-city <span className="text-gray-500 font-normal">(Optional)</span>
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="text"
+                        placeholder="e.g. Bole, Kirkos, Kazanchis"
+                        value={deliveryInfo.area || ""}
+                        onChange={(e) => setDeliveryInfo({ area: e.target.value })}
+                        className="w-full rounded border border-luxury-gold/25 bg-luxury-green/40 p-3 pl-10 text-sm text-white placeholder-gray-600 outline-none focus:border-luxury-gold"
+                      />
+                      <MapPin className="absolute left-3 top-3.5 h-4 w-4 text-gray-500" />
+                    </div>
                   </div>
 
                   {/* Additional Address Details (Optional) */}
@@ -1037,9 +1049,8 @@ function CartPageContent() {
 
           {/* CHECKOUT & PAYMENT CARD (Unified in Right Column, visible without scrolling) */}
           <div className="lg:col-span-1 space-y-6 lg:sticky lg:top-6 h-fit">
-            <div className={`rounded-xl border bg-luxury-green-secondary/40 p-6 shadow-xl transition-all ${
-              paymentError ? "border-red-500/80 ring-1 ring-red-500/40" : "border-luxury-gold/20"
-            }`}>
+            <div className={`rounded-xl border bg-luxury-green-secondary/40 p-6 shadow-xl transition-all ${paymentError ? "border-red-500/80 ring-1 ring-red-500/40" : "border-luxury-gold/20"
+              }`}>
               <h2 className="font-serif text-xl font-semibold text-white tracking-wide border-b border-luxury-gold/15 pb-4 mb-5">
                 Payment & Checkout
               </h2>
@@ -1072,11 +1083,10 @@ function CartPageContent() {
                       setPaymentMethod("CASH");
                       setPaymentError("");
                     }}
-                    className={`flex flex-col items-center text-center p-3 rounded-xl border transition-all ${
-                      paymentMethod === "CASH"
+                    className={`flex flex-col items-center text-center p-3 rounded-xl border transition-all ${paymentMethod === "CASH"
                         ? "border-luxury-gold bg-luxury-gold/15 shadow-[0_0_15px_rgba(201,168,76,0.15)] ring-1 ring-luxury-gold/40"
                         : "border-luxury-gold/15 bg-luxury-green/30 hover:border-luxury-gold/30 hover:bg-luxury-green/50"
-                    }`}
+                      }`}
                   >
                     <div className={`rounded-lg p-2 mb-1.5 ${paymentMethod === "CASH" ? "bg-luxury-gold text-luxury-green" : "bg-luxury-green text-gray-400"}`}>
                       <Banknote className="h-5 w-5" />
@@ -1092,11 +1102,10 @@ function CartPageContent() {
                       setPaymentMethod("DIGITAL");
                       setPaymentError("");
                     }}
-                    className={`flex flex-col items-center text-center p-3 rounded-xl border transition-all ${
-                      paymentMethod === "DIGITAL"
+                    className={`flex flex-col items-center text-center p-3 rounded-xl border transition-all ${paymentMethod === "DIGITAL"
                         ? "border-luxury-gold bg-luxury-gold/15 shadow-[0_0_15px_rgba(201,168,76,0.15)] ring-1 ring-luxury-gold/40"
                         : "border-luxury-gold/15 bg-luxury-green/30 hover:border-luxury-gold/30 hover:bg-luxury-green/50"
-                    }`}
+                      }`}
                   >
                     <div className={`rounded-lg p-2 mb-1.5 ${paymentMethod === "DIGITAL" ? "bg-luxury-gold text-luxury-green" : "bg-luxury-green text-gray-400"}`}>
                       <CreditCard className="h-5 w-5" />
@@ -1173,8 +1182,8 @@ function CartPageContent() {
                     {paymentMethod === "DIGITAL"
                       ? "Proceed to Online Payment"
                       : paymentMethod === "CASH"
-                      ? "Place Order (Cash)"
-                      : "Select Payment Method"}
+                        ? "Place Order (Cash)"
+                        : "Select Payment Method"}
                   </span>
                 )}
               </button>
