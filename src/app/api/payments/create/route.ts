@@ -21,12 +21,26 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    let returnUrlWithOrderId = return_url;
+    if (returnUrlWithOrderId && typeof returnUrlWithOrderId === "string") {
+      try {
+        const u = new URL(returnUrlWithOrderId, "http://localhost:3000");
+        u.searchParams.set("order_id", String(order_id));
+        if (!u.searchParams.has("payment")) {
+          u.searchParams.set("payment", "success");
+        }
+        returnUrlWithOrderId = u.toString();
+      } catch {
+        returnUrlWithOrderId = undefined;
+      }
+    }
+
     const result = await paymentService.createPayment({
       orderId: Number(order_id),
       method: normalizedMethod,
       customerEmail: customer_email,
       customerName: customer_name,
-      returnUrl: return_url,
+      returnUrl: returnUrlWithOrderId,
     });
 
     return NextResponse.json({

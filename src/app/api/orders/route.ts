@@ -228,6 +228,21 @@ export async function POST(req: NextRequest) {
       ? (delivery_name ? delivery_name.trim() : "Delivery Customer")
       : (customer_name || finalLocation);
 
+    // Build return URL ensuring order_id and payment=success are attached
+    let returnUrlWithOrderId = return_url;
+    if (returnUrlWithOrderId && typeof returnUrlWithOrderId === "string") {
+      try {
+        const u = new URL(returnUrlWithOrderId, "http://localhost:3000");
+        u.searchParams.set("order_id", String(order.id));
+        if (!u.searchParams.has("payment")) {
+          u.searchParams.set("payment", "success");
+        }
+        returnUrlWithOrderId = u.toString();
+      } catch {
+        returnUrlWithOrderId = undefined;
+      }
+    }
+
     let paymentResult;
     try {
       paymentResult = await paymentService.createPayment({
@@ -235,7 +250,7 @@ export async function POST(req: NextRequest) {
         method: selectedMethod,
         customerEmail: customer_email,
         customerName: guestPayerName,
-        returnUrl: return_url,
+        returnUrl: returnUrlWithOrderId,
       });
     } catch (paymentErr) {
       console.error("Order payment creation error:", paymentErr);

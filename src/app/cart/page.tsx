@@ -53,10 +53,14 @@ function CartPageContent() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [placedOrder, setPlacedOrder] = useState<Order | null>(null);
   const [verifyingPayment, setVerifyingPayment] = useState(false);
+  const [loadingOrder, setLoadingOrder] = useState(false);
+  const [orderNotFound, setOrderNotFound] = useState(false);
   const [actionError, setActionError] = useState("");
 
   const orderIdParam = searchParams.get("order_id");
+  const txRefParam = searchParams.get("tx_ref") || searchParams.get("trx_ref");
   const paymentParam = searchParams.get("payment");
+  const statusParam = searchParams.get("status");
 
   useEffect(() => {
     setMounted(true);
@@ -73,25 +77,65 @@ function CartPageContent() {
 
   // Handle return from digital payment checkout or direct order tracking
   useEffect(() => {
-    if (!orderIdParam) return;
+    let targetOrderId = orderIdParam;
+
+    // 1. Try extracting order ID from Chapa tx_ref / trx_ref (e.g. GH-ORDER-42-17112345)
+    if (!targetOrderId && txRefParam) {
+      const match = txRefParam.match(/GH-ORDER-(\d+)/i);
+      if (match) {
+        targetOrderId = match[1];
+      }
+    }
+
+    // 2. Try recovering from sessionStorage/localStorage if returning from payment gateway
+    if (!targetOrderId && (paymentParam === "success" || statusParam === "success" || txRefParam)) {
+      if (typeof window !== "undefined") {
+        const stored = sessionStorage.getItem("last_digital_order_id") || localStorage.getItem("last_digital_order_id");
+        if (stored) {
+          targetOrderId = stored;
+        }
+      }
+    }
+
+    if (!targetOrderId) return;
 
     const checkOrder = async () => {
+      setLoadingOrder(true);
       setVerifyingPayment(true);
+      setOrderNotFound(false);
       try {
+        const isReturningFromCheckout =
+          paymentParam === "success" ||
+          statusParam === "success" ||
+          Boolean(txRefParam);
+
         // If returning from checkout, verify with server-side provider first
-        if (paymentParam === "success" || searchParams.get("tx_ref")) {
-          await fetch("/api/payments/verify", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ order_id: Number(orderIdParam) }),
-          });
+        if (isReturningFromCheckout) {
+          try {
+            await fetch("/api/payments/verify", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                order_id: Number(targetOrderId),
+                tx_ref: txRefParam || undefined,
+              }),
+            });
+          } catch (verifyErr) {
+            console.warn("Chapa payment initial verify warning:", verifyErr);
+          }
         }
 
-        const res = await fetch(`/api/orders/${orderIdParam}`);
+        const res = await fetch(`/api/orders/${targetOrderId}`);
         if (res.ok) {
           const data: Order = await res.json();
           setPlacedOrder(data);
           clearCart();
+          try {
+            sessionStorage.removeItem("last_digital_order_id");
+            localStorage.removeItem("last_digital_order_id");
+          } catch {
+            // Ignore storage cleanup glitch
+          }
           if (data.payment_status === "PAID") {
             confetti({
               particleCount: 150,
@@ -100,16 +144,19 @@ function CartPageContent() {
               colors: ["#D4AF37", "#FFFFFF", "#0F2318"],
             });
           }
+        } else if (res.status === 404) {
+          setOrderNotFound(true);
         }
       } catch (err) {
         console.error("Failed to verify/fetch order:", err);
       } finally {
         setVerifyingPayment(false);
+        setLoadingOrder(false);
       }
     };
 
     checkOrder();
-  }, [orderIdParam, paymentParam, searchParams, clearCart]);
+  }, [orderIdParam, txRefParam, paymentParam, statusParam, clearCart]);
 
   // Status polling for placed order with automatic live re-verification for pending digital payments
   useEffect(() => {
@@ -162,6 +209,53 @@ function CartPageContent() {
           </div>
           <div className="h-32 rounded-lg border border-luxury-gold/10 bg-luxury-green-secondary/30" />
         </div>
+      </div>
+    );
+  }
+
+  if (orderNotFound) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-luxury-green px-4 text-center">
+        <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border border-rose-500/30 bg-rose-500/10 text-rose-400">
+          <AlertCircle className="h-10 w-10" />
+        </div>
+        <h2 className="font-serif text-3xl font-light text-white mb-2">Order Not Found</h2>
+        <p className="text-sm text-gray-400 max-w-sm mb-6">
+          We could not locate this order. It may have been completed or cancelled.
+        </p>
+        <Link
+          href="/"
+          className="rounded bg-luxury-gold px-6 py-3 text-xs font-semibold tracking-widest text-luxury-green uppercase transition-all duration-300 hover:bg-luxury-gold-hover"
+        >
+          Return to Menu
+        </Link>
+      </div>
+    );
+  }
+
+  const isAwaitingOrder = !placedOrder && (
+    loadingOrder ||
+    Boolean(orderIdParam) ||
+    Boolean(txRefParam) ||
+    paymentParam === "success" ||
+    statusParam === "success"
+  );
+
+  if (isAwaitingOrder) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-luxury-green px-4 text-center">
+        <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border border-luxury-gold/30 bg-luxury-green-secondary/50 text-luxury-gold shadow-[0_0_20px_rgba(201,168,76,0.3)]">
+          <RefreshCw className="h-10 w-10 text-luxury-gold animate-spin" />
+        </div>
+        <p className="text-[10px] font-semibold tracking-[0.25em] text-luxury-gold uppercase mb-2">
+          Payment &amp; Order Status
+        </p>
+        <h2 className="font-serif text-3xl font-light text-white mb-3">
+          Confirming Your Order
+        </h2>
+        <p className="text-sm text-gray-400 max-w-sm">
+          Please wait while we verify your transaction and load your order status...
+        </p>
       </div>
     );
   }
@@ -236,6 +330,12 @@ function CartPageContent() {
 
         // If digital payment has checkout URL, redirect to Chapa hosted payment
         if (paymentMethod === "DIGITAL" && data.checkout_url) {
+          try {
+            sessionStorage.setItem("last_digital_order_id", String(data.id));
+            localStorage.setItem("last_digital_order_id", String(data.id));
+          } catch (e) {
+            console.error("Storage error:", e);
+          }
           clearCart();
           window.location.href = data.checkout_url;
           return;
@@ -276,6 +376,12 @@ function CartPageContent() {
       });
       const data = await res.json();
       if (res.ok && data.checkout_url) {
+        try {
+          sessionStorage.setItem("last_digital_order_id", String(placedOrder.id));
+          localStorage.setItem("last_digital_order_id", String(placedOrder.id));
+        } catch {
+          // Ignore
+        }
         window.location.href = data.checkout_url;
       } else {
         setActionError(data.error || "Unable to initialize digital payment. Please try Cash.");

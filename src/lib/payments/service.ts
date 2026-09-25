@@ -94,7 +94,19 @@ export class PaymentService {
     const baseUrl = (configuredBase && !configuredBase.includes("localhost"))
       ? configuredBase
       : (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : (configuredBase || "http://localhost:3000"));
-    const returnUrl = options.returnUrl || `${baseUrl}/cart?order_id=${orderId}&payment=success`;
+    let returnUrl = options.returnUrl || `${baseUrl}/cart?order_id=${orderId}&payment=success`;
+    try {
+      const parsedUrl = new URL(returnUrl, baseUrl);
+      if (!parsedUrl.searchParams.has("order_id")) {
+        parsedUrl.searchParams.set("order_id", String(orderId));
+      }
+      if (!parsedUrl.searchParams.has("payment")) {
+        parsedUrl.searchParams.set("payment", "success");
+      }
+      returnUrl = parsedUrl.toString();
+    } catch {
+      returnUrl = `${baseUrl}/cart?order_id=${orderId}&payment=success`;
+    }
     const callbackUrl = options.callbackUrl || `${baseUrl}/api/payments/webhook`;
 
     const initResult = await provider.initializePayment({
@@ -159,21 +171,27 @@ export class PaymentService {
    * Verifies digital payment directly with the provider (server-side verification).
    * Ensures idempotency: will not double-count revenue if already marked PAID.
    */
-  async verifyPayment(orderId: number, txRef?: string) {
+  async verifyPayment(orderId?: number, txRef?: string) {
     // 1. Locate payment record
     let paymentRows;
-    if (txRef) {
+    if (orderId && txRef) {
       paymentRows = await sql`
         SELECT * FROM payments WHERE order_id = ${orderId} AND provider_payment_id = ${txRef}
       `;
-    } else {
+    } else if (orderId) {
       paymentRows = await sql`
         SELECT * FROM payments WHERE order_id = ${orderId} ORDER BY id DESC LIMIT 1
       `;
+    } else if (txRef) {
+      paymentRows = await sql`
+        SELECT * FROM payments WHERE provider_payment_id = ${txRef} ORDER BY id DESC LIMIT 1
+      `;
+    } else {
+      throw new Error("orderId or txRef is required to verify payment.");
     }
 
     if (paymentRows.length === 0) {
-      throw new Error(`No payment record found for Order #${orderId}.`);
+      throw new Error(`No payment record found${orderId ? ` for Order #${orderId}` : ""}${txRef ? ` with reference ${txRef}` : ""}.`);
     }
 
     const payment = paymentRows[0] as Payment;
